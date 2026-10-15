@@ -1,0 +1,25 @@
+[Unit]
+Description=CrimsonWorld online game
+After=network.target
+
+[Service]
+Type=simple
+User=crimsonworld
+Group=crimsonworld
+WorkingDirectory=/opt/game/current
+Environment=CRIMSON_DB=/opt/game/data/crimsonworld.sqlite
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/game/venv/bin/gunicorn --bind 0.0.0.0:80 --workers 1 --threads 4 --timeout 60 --access-logfile - --error-logfile - server.app:app
+Restart=on-failure
+RestartSec=3
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/game/data
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

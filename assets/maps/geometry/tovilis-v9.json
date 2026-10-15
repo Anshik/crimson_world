@@ -1,0 +1,5128 @@
+{
+  "schemaVersion": 1,
+  "id": "tovilis-v9",
+  "revision": 2,
+  "createdOn": "2026-10-13",
+  "status": "working_annotation",
+  "source": {
+    "path": "assets/maps/working/tovilis-v9.png",
+    "width": 1448,
+    "height": 1086,
+    "sha256": "cca9d2ac88d3492b315cd3e64e667beb877215bd206cb1a5e69150b8c35e68ff"
+  },
+  "coordinates": {
+    "origin": "top-left",
+    "units": "source-image-pixels",
+    "positionMeaning": "feet position / street cell centre"
+  },
+  "policy": {
+    "oneEdgeOneStep": true,
+    "junctionStopsMovement": true,
+    "eventsOnFinalCellOnly": true,
+    "arrowsAffectMovement": false,
+    "outsideMapTravel": false,
+    "unknownSignsHaveEffects": false
+  },
+  "startCell": "U07",
+  "startNote": "Владелец указал вход справа между лавкой и трактиром. J08 остаётся прежней контрольной точкой у бассейна.",
+  "cells": [
+    {
+      "id": "Q01",
+      "polygon": [
+        [
+          218,
+          478
+        ],
+        [
+          269,
+          478
+        ],
+        [
+          248,
+          498
+        ],
+        [
+          199,
+          498
+        ]
+      ],
+      "position": [
+        233.5,
+        488.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "↔",
+      "kind": "dead_end"
+    },
+    {
+      "id": "Q02",
+      "polygon": [
+        [
+          269,
+          478
+        ],
+        [
+          300,
+          477
+        ],
+        [
+          284,
+          497
+        ],
+        [
+          248,
+          498
+        ]
+      ],
+      "position": [
+        275.25,
+        487.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелки",
+      "kind": "junction"
+    },
+    {
+      "id": "Q03",
+      "polygon": [
+        [
+          300,
+          477
+        ],
+        [
+          321,
+          477
+        ],
+        [
+          308,
+          497
+        ],
+        [
+          284,
+          497
+        ]
+      ],
+      "position": [
+        303.25,
+        487.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "Q04",
+      "polygon": [
+        [
+          321,
+          477
+        ],
+        [
+          344,
+          477
+        ],
+        [
+          337,
+          496
+        ],
+        [
+          308,
+          497
+        ]
+      ],
+      "position": [
+        327.5,
+        486.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "Q05",
+      "polygon": [
+        [
+          344,
+          477
+        ],
+        [
+          376,
+          476
+        ],
+        [
+          378,
+          495
+        ],
+        [
+          337,
+          496
+        ]
+      ],
+      "position": [
+        358.75,
+        486.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": "encounter",
+      "mark": "В",
+      "kind": "path"
+    },
+    {
+      "id": "Q06",
+      "polygon": [
+        [
+          376,
+          476
+        ],
+        [
+          414,
+          475
+        ],
+        [
+          424,
+          494
+        ],
+        [
+          378,
+          495
+        ]
+      ],
+      "position": [
+        398.0,
+        485.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "Q07",
+      "polygon": [
+        [
+          414,
+          475
+        ],
+        [
+          452,
+          475
+        ],
+        [
+          468,
+          492
+        ],
+        [
+          424,
+          494
+        ]
+      ],
+      "position": [
+        439.5,
+        484.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "Q08",
+      "polygon": [
+        [
+          452,
+          475
+        ],
+        [
+          481,
+          474
+        ],
+        [
+          494,
+          491
+        ],
+        [
+          468,
+          492
+        ]
+      ],
+      "position": [
+        473.75,
+        483.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "Q09",
+      "polygon": [
+        [
+          481,
+          474
+        ],
+        [
+          505,
+          473
+        ],
+        [
+          527,
+          490
+        ],
+        [
+          494,
+          491
+        ]
+      ],
+      "position": [
+        501.75,
+        482.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "Q10",
+      "polygon": [
+        [
+          505,
+          473
+        ],
+        [
+          545,
+          471
+        ],
+        [
+          568,
+          488
+        ],
+        [
+          527,
+          490
+        ]
+      ],
+      "position": [
+        536.25,
+        480.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": "notice",
+      "mark": "И",
+      "kind": "path"
+    },
+    {
+      "id": "Q11",
+      "polygon": [
+        [
+          545,
+          471
+        ],
+        [
+          590,
+          469
+        ],
+        [
+          610,
+          486
+        ],
+        [
+          568,
+          488
+        ]
+      ],
+      "position": [
+        578.25,
+        478.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "Q12",
+      "polygon": [
+        [
+          590,
+          469
+        ],
+        [
+          640,
+          470
+        ],
+        [
+          674,
+          483
+        ],
+        [
+          610,
+          486
+        ]
+      ],
+      "position": [
+        628.5,
+        477.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелка",
+      "kind": "path"
+    },
+    {
+      "id": "Q13",
+      "polygon": [
+        [
+          640,
+          470
+        ],
+        [
+          680,
+          467
+        ],
+        [
+          728,
+          482
+        ],
+        [
+          674,
+          483
+        ]
+      ],
+      "position": [
+        680.5,
+        475.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "J01",
+      "polygon": [
+        [
+          680,
+          467
+        ],
+        [
+          710,
+          462
+        ],
+        [
+          770,
+          479
+        ],
+        [
+          728,
+          482
+        ]
+      ],
+      "position": [
+        722.0,
+        472.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелки",
+      "kind": "junction"
+    },
+    {
+      "id": "P01",
+      "polygon": [
+        [
+          680,
+          467
+        ],
+        [
+          653,
+          458
+        ],
+        [
+          688,
+          453
+        ],
+        [
+          710,
+          462
+        ]
+      ],
+      "position": [
+        682.75,
+        460.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелка",
+      "kind": "path"
+    },
+    {
+      "id": "P02",
+      "polygon": [
+        [
+          653,
+          458
+        ],
+        [
+          614,
+          448
+        ],
+        [
+          644,
+          444
+        ],
+        [
+          688,
+          453
+        ]
+      ],
+      "position": [
+        649.75,
+        450.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелка / ?",
+      "kind": "dead_end"
+    },
+    {
+      "id": "N01",
+      "polygon": [
+        [
+          728,
+          482
+        ],
+        [
+          770,
+          479
+        ],
+        [
+          821,
+          489
+        ],
+        [
+          776,
+          496
+        ]
+      ],
+      "position": [
+        773.75,
+        486.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "J02",
+      "polygon": [
+        [
+          776,
+          496
+        ],
+        [
+          821,
+          489
+        ],
+        [
+          871,
+          504
+        ],
+        [
+          819,
+          510
+        ]
+      ],
+      "position": [
+        821.75,
+        499.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелка",
+      "kind": "junction"
+    },
+    {
+      "id": "U01",
+      "polygon": [
+        [
+          821,
+          489
+        ],
+        [
+          881,
+          482
+        ],
+        [
+          925,
+          497
+        ],
+        [
+          871,
+          504
+        ]
+      ],
+      "position": [
+        874.5,
+        493.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "U02",
+      "polygon": [
+        [
+          881,
+          482
+        ],
+        [
+          927,
+          477
+        ],
+        [
+          978,
+          491
+        ],
+        [
+          925,
+          497
+        ]
+      ],
+      "position": [
+        927.75,
+        486.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "U03",
+      "polygon": [
+        [
+          927,
+          477
+        ],
+        [
+          972,
+          476
+        ],
+        [
+          1024,
+          487
+        ],
+        [
+          978,
+          491
+        ]
+      ],
+      "position": [
+        975.25,
+        482.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "U04",
+      "polygon": [
+        [
+          972,
+          476
+        ],
+        [
+          1028,
+          470
+        ],
+        [
+          1068,
+          479
+        ],
+        [
+          1024,
+          487
+        ]
+      ],
+      "position": [
+        1023.0,
+        478.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелки",
+      "kind": "path"
+    },
+    {
+      "id": "U05",
+      "polygon": [
+        [
+          1068,
+          479
+        ],
+        [
+          1127,
+          488
+        ],
+        [
+          1078,
+          496
+        ],
+        [
+          1024,
+          487
+        ]
+      ],
+      "position": [
+        1074.25,
+        487.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "U06",
+      "polygon": [
+        [
+          1127,
+          488
+        ],
+        [
+          1177,
+          499
+        ],
+        [
+          1114,
+          509
+        ],
+        [
+          1078,
+          496
+        ]
+      ],
+      "position": [
+        1124.0,
+        498.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелка",
+      "kind": "path"
+    },
+    {
+      "id": "J03",
+      "polygon": [
+        [
+          1114,
+          509
+        ],
+        [
+          1177,
+          499
+        ],
+        [
+          1243,
+          515
+        ],
+        [
+          1183,
+          526
+        ]
+      ],
+      "position": [
+        1179.25,
+        512.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелки",
+      "kind": "junction"
+    },
+    {
+      "id": "U07",
+      "polygon": [
+        [
+          1177,
+          499
+        ],
+        [
+          1213,
+          487
+        ],
+        [
+          1274,
+          502
+        ],
+        [
+          1243,
+          515
+        ]
+      ],
+      "position": [
+        1226.75,
+        500.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелка / ?",
+      "kind": "dead_end"
+    },
+    {
+      "id": "J04",
+      "polygon": [
+        [
+          890,
+          533
+        ],
+        [
+          949,
+          526
+        ],
+        [
+          1008,
+          544
+        ],
+        [
+          949,
+          552
+        ]
+      ],
+      "position": [
+        949.0,
+        538.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "↔",
+      "kind": "junction"
+    },
+    {
+      "id": "D01",
+      "polygon": [
+        [
+          819,
+          510
+        ],
+        [
+          860,
+          524
+        ],
+        [
+          913,
+          515
+        ],
+        [
+          871,
+          504
+        ]
+      ],
+      "position": [
+        865.75,
+        513.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "D02",
+      "polygon": [
+        [
+          860,
+          524
+        ],
+        [
+          890,
+          533
+        ],
+        [
+          949,
+          526
+        ],
+        [
+          913,
+          515
+        ]
+      ],
+      "position": [
+        903.0,
+        524.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелка",
+      "kind": "path"
+    },
+    {
+      "id": "M01",
+      "polygon": [
+        [
+          949,
+          526
+        ],
+        [
+          1002,
+          517
+        ],
+        [
+          1070,
+          535
+        ],
+        [
+          1008,
+          544
+        ]
+      ],
+      "position": [
+        1007.25,
+        530.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": "notice",
+      "mark": "И",
+      "kind": "path"
+    },
+    {
+      "id": "M02",
+      "polygon": [
+        [
+          1002,
+          517
+        ],
+        [
+          1075,
+          507
+        ],
+        [
+          1127,
+          524
+        ],
+        [
+          1070,
+          535
+        ]
+      ],
+      "position": [
+        1068.5,
+        520.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "M03",
+      "polygon": [
+        [
+          1075,
+          507
+        ],
+        [
+          1114,
+          509
+        ],
+        [
+          1183,
+          526
+        ],
+        [
+          1127,
+          524
+        ]
+      ],
+      "position": [
+        1124.75,
+        516.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "T01",
+      "polygon": [
+        [
+          1243,
+          515
+        ],
+        [
+          1303,
+          527
+        ],
+        [
+          1257,
+          542
+        ],
+        [
+          1183,
+          526
+        ]
+      ],
+      "position": [
+        1246.5,
+        527.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "T02",
+      "polygon": [
+        [
+          1303,
+          527
+        ],
+        [
+          1358,
+          535
+        ],
+        [
+          1321,
+          554
+        ],
+        [
+          1257,
+          542
+        ]
+      ],
+      "position": [
+        1309.75,
+        539.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "T03",
+      "polygon": [
+        [
+          1358,
+          535
+        ],
+        [
+          1420,
+          544
+        ],
+        [
+          1364,
+          559
+        ],
+        [
+          1321,
+          554
+        ]
+      ],
+      "position": [
+        1365.75,
+        548.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "↔",
+      "kind": "dead_end"
+    },
+    {
+      "id": "W01",
+      "polygon": [
+        [
+          692,
+          560
+        ],
+        [
+          733,
+          554
+        ],
+        [
+          777,
+          579
+        ],
+        [
+          737,
+          584
+        ]
+      ],
+      "position": [
+        734.75,
+        569.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "W02",
+      "polygon": [
+        [
+          733,
+          554
+        ],
+        [
+          794,
+          546
+        ],
+        [
+          840,
+          571
+        ],
+        [
+          777,
+          579
+        ]
+      ],
+      "position": [
+        786.0,
+        562.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": "encounter",
+      "mark": "В",
+      "kind": "path"
+    },
+    {
+      "id": "W03",
+      "polygon": [
+        [
+          794,
+          546
+        ],
+        [
+          840,
+          541
+        ],
+        [
+          897,
+          560
+        ],
+        [
+          840,
+          571
+        ]
+      ],
+      "position": [
+        842.75,
+        554.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "неясный знак",
+      "kind": "path"
+    },
+    {
+      "id": "W04",
+      "polygon": [
+        [
+          840,
+          541
+        ],
+        [
+          890,
+          533
+        ],
+        [
+          949,
+          552
+        ],
+        [
+          897,
+          560
+        ]
+      ],
+      "position": [
+        894.0,
+        546.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "B01",
+      "polygon": [
+        [
+          737,
+          584
+        ],
+        [
+          766,
+          604
+        ],
+        [
+          815,
+          595
+        ],
+        [
+          777,
+          579
+        ]
+      ],
+      "position": [
+        773.75,
+        590.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "B02",
+      "polygon": [
+        [
+          766,
+          604
+        ],
+        [
+          797,
+          625
+        ],
+        [
+          853,
+          615
+        ],
+        [
+          815,
+          595
+        ]
+      ],
+      "position": [
+        807.75,
+        609.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "←",
+      "kind": "path"
+    },
+    {
+      "id": "B03",
+      "polygon": [
+        [
+          797,
+          625
+        ],
+        [
+          818,
+          644
+        ],
+        [
+          882,
+          637
+        ],
+        [
+          853,
+          615
+        ]
+      ],
+      "position": [
+        837.5,
+        630.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "→",
+      "kind": "path"
+    },
+    {
+      "id": "B04",
+      "polygon": [
+        [
+          818,
+          644
+        ],
+        [
+          882,
+          637
+        ],
+        [
+          932,
+          665
+        ],
+        [
+          861,
+          673
+        ]
+      ],
+      "position": [
+        873.25,
+        654.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "F01",
+      "polygon": [
+        [
+          861,
+          673
+        ],
+        [
+          786,
+          675
+        ],
+        [
+          751,
+          645
+        ],
+        [
+          818,
+          644
+        ]
+      ],
+      "position": [
+        804.0,
+        659.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "F02",
+      "polygon": [
+        [
+          786,
+          675
+        ],
+        [
+          741,
+          679
+        ],
+        [
+          710,
+          651
+        ],
+        [
+          751,
+          645
+        ]
+      ],
+      "position": [
+        747.0,
+        662.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": "notice",
+      "mark": "И",
+      "kind": "path"
+    },
+    {
+      "id": "F03",
+      "polygon": [
+        [
+          741,
+          679
+        ],
+        [
+          710,
+          681
+        ],
+        [
+          681,
+          655
+        ],
+        [
+          710,
+          651
+        ]
+      ],
+      "position": [
+        710.5,
+        666.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "F04",
+      "polygon": [
+        [
+          710,
+          681
+        ],
+        [
+          675,
+          685
+        ],
+        [
+          643,
+          661
+        ],
+        [
+          681,
+          655
+        ]
+      ],
+      "position": [
+        677.25,
+        670.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "F05",
+      "polygon": [
+        [
+          675,
+          685
+        ],
+        [
+          710,
+          681
+        ],
+        [
+          731,
+          703
+        ],
+        [
+          697,
+          707
+        ]
+      ],
+      "position": [
+        703.25,
+        694.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "G01",
+      "polygon": [
+        [
+          697,
+          707
+        ],
+        [
+          716,
+          729
+        ],
+        [
+          752,
+          724
+        ],
+        [
+          731,
+          703
+        ]
+      ],
+      "position": [
+        724.0,
+        715.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "G02",
+      "polygon": [
+        [
+          716,
+          729
+        ],
+        [
+          730,
+          755
+        ],
+        [
+          772,
+          749
+        ],
+        [
+          752,
+          724
+        ]
+      ],
+      "position": [
+        742.5,
+        739.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "J05",
+      "polygon": [
+        [
+          730,
+          755
+        ],
+        [
+          772,
+          749
+        ],
+        [
+          814,
+          789
+        ],
+        [
+          762,
+          793
+        ]
+      ],
+      "position": [
+        769.5,
+        771.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелки / ?",
+      "kind": "junction"
+    },
+    {
+      "id": "A01",
+      "polygon": [
+        [
+          248,
+          498
+        ],
+        [
+          235,
+          516
+        ],
+        [
+          272,
+          516
+        ],
+        [
+          284,
+          497
+        ]
+      ],
+      "position": [
+        259.75,
+        506.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A02",
+      "polygon": [
+        [
+          235,
+          516
+        ],
+        [
+          216,
+          542
+        ],
+        [
+          256,
+          542
+        ],
+        [
+          272,
+          516
+        ]
+      ],
+      "position": [
+        244.75,
+        529.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "partly_occluded",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A03",
+      "polygon": [
+        [
+          216,
+          542
+        ],
+        [
+          199,
+          561
+        ],
+        [
+          242,
+          561
+        ],
+        [
+          256,
+          542
+        ]
+      ],
+      "position": [
+        228.25,
+        551.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "partly_occluded",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A04",
+      "polygon": [
+        [
+          199,
+          561
+        ],
+        [
+          181,
+          580
+        ],
+        [
+          227,
+          581
+        ],
+        [
+          242,
+          561
+        ]
+      ],
+      "position": [
+        212.25,
+        570.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "partly_occluded",
+      "event": "notice",
+      "mark": "И",
+      "kind": "path"
+    },
+    {
+      "id": "A05",
+      "polygon": [
+        [
+          181,
+          580
+        ],
+        [
+          159,
+          603
+        ],
+        [
+          209,
+          604
+        ],
+        [
+          227,
+          581
+        ]
+      ],
+      "position": [
+        194.0,
+        592.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A06",
+      "polygon": [
+        [
+          159,
+          603
+        ],
+        [
+          132,
+          633
+        ],
+        [
+          189,
+          635
+        ],
+        [
+          209,
+          604
+        ]
+      ],
+      "position": [
+        172.25,
+        618.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "← / ?",
+      "kind": "path"
+    },
+    {
+      "id": "A07",
+      "polygon": [
+        [
+          132,
+          633
+        ],
+        [
+          113,
+          656
+        ],
+        [
+          171,
+          659
+        ],
+        [
+          189,
+          635
+        ]
+      ],
+      "position": [
+        151.25,
+        645.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A08",
+      "polygon": [
+        [
+          113,
+          656
+        ],
+        [
+          94,
+          678
+        ],
+        [
+          153,
+          681
+        ],
+        [
+          171,
+          659
+        ]
+      ],
+      "position": [
+        132.75,
+        668.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "неясная надпись",
+      "kind": "path"
+    },
+    {
+      "id": "A09",
+      "polygon": [
+        [
+          94,
+          678
+        ],
+        [
+          70,
+          707
+        ],
+        [
+          132,
+          707
+        ],
+        [
+          153,
+          681
+        ]
+      ],
+      "position": [
+        112.25,
+        693.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A11",
+      "polygon": [
+        [
+          70,
+          707
+        ],
+        [
+          132,
+          707
+        ],
+        [
+          112,
+          738
+        ],
+        [
+          99,
+          723
+        ]
+      ],
+      "position": [
+        103.25,
+        718.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "partly_occluded",
+      "event": null,
+      "mark": null,
+      "note": "Левый угол скрыт передней крышей; проход прослеживается по правой границе.",
+      "kind": "path"
+    },
+    {
+      "id": "A12",
+      "polygon": [
+        [
+          132,
+          707
+        ],
+        [
+          170,
+          708
+        ],
+        [
+          148,
+          738
+        ],
+        [
+          112,
+          738
+        ]
+      ],
+      "position": [
+        140.5,
+        722.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A13",
+      "polygon": [
+        [
+          170,
+          708
+        ],
+        [
+          203,
+          708
+        ],
+        [
+          187,
+          738
+        ],
+        [
+          148,
+          738
+        ]
+      ],
+      "position": [
+        177.0,
+        723.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A14",
+      "polygon": [
+        [
+          203,
+          708
+        ],
+        [
+          236,
+          708
+        ],
+        [
+          223,
+          738
+        ],
+        [
+          187,
+          738
+        ]
+      ],
+      "position": [
+        212.25,
+        723.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A15",
+      "polygon": [
+        [
+          236,
+          708
+        ],
+        [
+          265,
+          707
+        ],
+        [
+          253,
+          738
+        ],
+        [
+          223,
+          738
+        ]
+      ],
+      "position": [
+        244.25,
+        722.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "A16",
+      "polygon": [
+        [
+          112,
+          738
+        ],
+        [
+          253,
+          738
+        ],
+        [
+          242,
+          783
+        ],
+        [
+          131,
+          783
+        ]
+      ],
+      "position": [
+        242,
+        760
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "interpretation",
+      "event": null,
+      "mark": null,
+      "note": "Широкий участок без внутренних делений; для прототипа считается одной клеткой. Левая граница закрыта крышей.",
+      "kind": "path"
+    },
+    {
+      "id": "J06",
+      "polygon": [
+        [
+          184,
+          784
+        ],
+        [
+          242,
+          783
+        ],
+        [
+          230,
+          816
+        ],
+        [
+          178,
+          816
+        ]
+      ],
+      "position": [
+        208.5,
+        799.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "стрелки",
+      "kind": "junction"
+    },
+    {
+      "id": "H01",
+      "polygon": [
+        [
+          131,
+          783
+        ],
+        [
+          184,
+          784
+        ],
+        [
+          178,
+          816
+        ],
+        [
+          117,
+          813
+        ]
+      ],
+      "position": [
+        152.5,
+        799.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "partly_occluded",
+      "event": null,
+      "mark": "стрелка",
+      "note": "Край клетки закрыт крышей и вывеской О.",
+      "kind": "dead_end"
+    },
+    {
+      "id": "S01",
+      "polygon": [
+        [
+          242,
+          783
+        ],
+        [
+          278,
+          782
+        ],
+        [
+          266,
+          815
+        ],
+        [
+          230,
+          816
+        ]
+      ],
+      "position": [
+        254.0,
+        799.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S02",
+      "polygon": [
+        [
+          278,
+          782
+        ],
+        [
+          307,
+          781
+        ],
+        [
+          299,
+          815
+        ],
+        [
+          266,
+          815
+        ]
+      ],
+      "position": [
+        287.5,
+        798.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S03",
+      "polygon": [
+        [
+          307,
+          781
+        ],
+        [
+          338,
+          780
+        ],
+        [
+          333,
+          814
+        ],
+        [
+          299,
+          815
+        ]
+      ],
+      "position": [
+        319.25,
+        797.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": "notice",
+      "mark": "И",
+      "kind": "path"
+    },
+    {
+      "id": "S04",
+      "polygon": [
+        [
+          338,
+          780
+        ],
+        [
+          359,
+          780
+        ],
+        [
+          357,
+          814
+        ],
+        [
+          333,
+          814
+        ]
+      ],
+      "position": [
+        346.75,
+        797.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S05",
+      "polygon": [
+        [
+          359,
+          780
+        ],
+        [
+          385,
+          779
+        ],
+        [
+          386,
+          813
+        ],
+        [
+          357,
+          814
+        ]
+      ],
+      "position": [
+        371.75,
+        796.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S06",
+      "polygon": [
+        [
+          385,
+          779
+        ],
+        [
+          409,
+          779
+        ],
+        [
+          414,
+          812
+        ],
+        [
+          386,
+          813
+        ]
+      ],
+      "position": [
+        398.5,
+        795.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S07",
+      "polygon": [
+        [
+          409,
+          779
+        ],
+        [
+          442,
+          778
+        ],
+        [
+          449,
+          811
+        ],
+        [
+          414,
+          812
+        ]
+      ],
+      "position": [
+        428.5,
+        795.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "J07",
+      "polygon": [
+        [
+          442,
+          778
+        ],
+        [
+          483,
+          776
+        ],
+        [
+          493,
+          810
+        ],
+        [
+          449,
+          811
+        ]
+      ],
+      "position": [
+        466.75,
+        793.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "↓",
+      "kind": "junction"
+    },
+    {
+      "id": "S08",
+      "polygon": [
+        [
+          483,
+          776
+        ],
+        [
+          510,
+          775
+        ],
+        [
+          521,
+          808
+        ],
+        [
+          493,
+          810
+        ]
+      ],
+      "position": [
+        501.75,
+        792.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S09",
+      "polygon": [
+        [
+          510,
+          775
+        ],
+        [
+          536,
+          773
+        ],
+        [
+          548,
+          806
+        ],
+        [
+          521,
+          808
+        ]
+      ],
+      "position": [
+        528.75,
+        790.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S10",
+      "polygon": [
+        [
+          536,
+          773
+        ],
+        [
+          562,
+          772
+        ],
+        [
+          575,
+          804
+        ],
+        [
+          548,
+          806
+        ]
+      ],
+      "position": [
+        555.25,
+        788.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "П",
+      "kind": "path"
+    },
+    {
+      "id": "S11",
+      "polygon": [
+        [
+          562,
+          772
+        ],
+        [
+          591,
+          770
+        ],
+        [
+          608,
+          802
+        ],
+        [
+          575,
+          804
+        ]
+      ],
+      "position": [
+        584.0,
+        787.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S12",
+      "polygon": [
+        [
+          591,
+          770
+        ],
+        [
+          616,
+          768
+        ],
+        [
+          638,
+          800
+        ],
+        [
+          608,
+          802
+        ]
+      ],
+      "position": [
+        613.25,
+        785.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "↑ / ?",
+      "kind": "path"
+    },
+    {
+      "id": "S13",
+      "polygon": [
+        [
+          616,
+          768
+        ],
+        [
+          651,
+          766
+        ],
+        [
+          676,
+          799
+        ],
+        [
+          638,
+          800
+        ]
+      ],
+      "position": [
+        645.25,
+        783.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S14",
+      "polygon": [
+        [
+          651,
+          766
+        ],
+        [
+          690,
+          762
+        ],
+        [
+          720,
+          797
+        ],
+        [
+          676,
+          799
+        ]
+      ],
+      "position": [
+        684.25,
+        781.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "S15",
+      "polygon": [
+        [
+          690,
+          762
+        ],
+        [
+          730,
+          755
+        ],
+        [
+          762,
+          793
+        ],
+        [
+          720,
+          797
+        ]
+      ],
+      "position": [
+        725.5,
+        776.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L01",
+      "polygon": [
+        [
+          178,
+          816
+        ],
+        [
+          166,
+          844
+        ],
+        [
+          218,
+          844
+        ],
+        [
+          230,
+          816
+        ]
+      ],
+      "position": [
+        198.0,
+        830.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L02",
+      "polygon": [
+        [
+          166,
+          844
+        ],
+        [
+          153,
+          872
+        ],
+        [
+          209,
+          873
+        ],
+        [
+          218,
+          844
+        ]
+      ],
+      "position": [
+        186.5,
+        858.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L03",
+      "polygon": [
+        [
+          153,
+          872
+        ],
+        [
+          140,
+          900
+        ],
+        [
+          198,
+          901
+        ],
+        [
+          209,
+          873
+        ]
+      ],
+      "position": [
+        175.0,
+        886.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L04",
+      "polygon": [
+        [
+          140,
+          900
+        ],
+        [
+          124,
+          938
+        ],
+        [
+          181,
+          938
+        ],
+        [
+          198,
+          901
+        ]
+      ],
+      "position": [
+        160.75,
+        919.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "← / ?",
+      "kind": "path"
+    },
+    {
+      "id": "L05",
+      "polygon": [
+        [
+          124,
+          938
+        ],
+        [
+          109,
+          974
+        ],
+        [
+          169,
+          976
+        ],
+        [
+          181,
+          938
+        ]
+      ],
+      "position": [
+        145.75,
+        956.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L06",
+      "polygon": [
+        [
+          109,
+          974
+        ],
+        [
+          90,
+          1022
+        ],
+        [
+          151,
+          1022
+        ],
+        [
+          169,
+          976
+        ]
+      ],
+      "position": [
+        129.75,
+        998.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L07",
+      "polygon": [
+        [
+          90,
+          1022
+        ],
+        [
+          151,
+          1022
+        ],
+        [
+          139,
+          1064
+        ],
+        [
+          66,
+          1064
+        ]
+      ],
+      "position": [
+        111.5,
+        1043.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "Ж.К. / ?",
+      "kind": "path"
+    },
+    {
+      "id": "L08",
+      "polygon": [
+        [
+          151,
+          1022
+        ],
+        [
+          210,
+          1022
+        ],
+        [
+          201,
+          1064
+        ],
+        [
+          139,
+          1064
+        ]
+      ],
+      "position": [
+        175.25,
+        1043.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L09",
+      "polygon": [
+        [
+          210,
+          1022
+        ],
+        [
+          252,
+          1022
+        ],
+        [
+          248,
+          1064
+        ],
+        [
+          201,
+          1064
+        ]
+      ],
+      "position": [
+        227.75,
+        1043.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L10",
+      "polygon": [
+        [
+          252,
+          1022
+        ],
+        [
+          294,
+          1022
+        ],
+        [
+          287,
+          1064
+        ],
+        [
+          248,
+          1064
+        ]
+      ],
+      "position": [
+        270.25,
+        1043.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L11",
+      "polygon": [
+        [
+          294,
+          1022
+        ],
+        [
+          338,
+          1022
+        ],
+        [
+          338,
+          1064
+        ],
+        [
+          287,
+          1064
+        ]
+      ],
+      "position": [
+        314.25,
+        1043.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L12",
+      "polygon": [
+        [
+          338,
+          1022
+        ],
+        [
+          388,
+          1022
+        ],
+        [
+          386,
+          1064
+        ],
+        [
+          338,
+          1064
+        ]
+      ],
+      "position": [
+        362.5,
+        1043.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L13",
+      "polygon": [
+        [
+          388,
+          1022
+        ],
+        [
+          436,
+          1022
+        ],
+        [
+          438,
+          1064
+        ],
+        [
+          386,
+          1064
+        ]
+      ],
+      "position": [
+        412.0,
+        1043.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "L14",
+      "polygon": [
+        [
+          436,
+          1022
+        ],
+        [
+          482,
+          1020
+        ],
+        [
+          494,
+          1064
+        ],
+        [
+          438,
+          1064
+        ]
+      ],
+      "position": [
+        462.5,
+        1042.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "J08",
+      "polygon": [
+        [
+          482,
+          1020
+        ],
+        [
+          548,
+          1018
+        ],
+        [
+          558,
+          1063
+        ],
+        [
+          494,
+          1064
+        ]
+      ],
+      "position": [
+        520.5,
+        1041.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "? / →",
+      "kind": "junction"
+    },
+    {
+      "id": "E01",
+      "polygon": [
+        [
+          449,
+          811
+        ],
+        [
+          453,
+          839
+        ],
+        [
+          500,
+          837
+        ],
+        [
+          493,
+          810
+        ]
+      ],
+      "position": [
+        473.75,
+        824.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "E02",
+      "polygon": [
+        [
+          453,
+          839
+        ],
+        [
+          458,
+          867
+        ],
+        [
+          506,
+          864
+        ],
+        [
+          500,
+          837
+        ]
+      ],
+      "position": [
+        479.25,
+        851.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "E03",
+      "polygon": [
+        [
+          458,
+          867
+        ],
+        [
+          463,
+          899
+        ],
+        [
+          514,
+          896
+        ],
+        [
+          506,
+          864
+        ]
+      ],
+      "position": [
+        485.25,
+        881.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "←",
+      "kind": "path"
+    },
+    {
+      "id": "E04",
+      "polygon": [
+        [
+          463,
+          899
+        ],
+        [
+          469,
+          935
+        ],
+        [
+          523,
+          931
+        ],
+        [
+          514,
+          896
+        ]
+      ],
+      "position": [
+        492.25,
+        915.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "E05",
+      "polygon": [
+        [
+          469,
+          935
+        ],
+        [
+          476,
+          979
+        ],
+        [
+          537,
+          977
+        ],
+        [
+          523,
+          931
+        ]
+      ],
+      "position": [
+        501.25,
+        955.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": "notice",
+      "mark": "И",
+      "kind": "path"
+    },
+    {
+      "id": "E06",
+      "polygon": [
+        [
+          476,
+          979
+        ],
+        [
+          482,
+          1020
+        ],
+        [
+          548,
+          1018
+        ],
+        [
+          537,
+          977
+        ]
+      ],
+      "position": [
+        510.75,
+        998.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "E07",
+      "polygon": [
+        [
+          494,
+          1064
+        ],
+        [
+          558,
+          1063
+        ],
+        [
+          562,
+          1086
+        ],
+        [
+          500,
+          1086
+        ]
+      ],
+      "position": [
+        528.5,
+        1074.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "partly_occluded",
+      "event": null,
+      "mark": null,
+      "note": "Часть клетки за нижним краем изображения неизвестна. Выход за карту закрыт.",
+      "kind": "dead_end"
+    },
+    {
+      "id": "R01",
+      "polygon": [
+        [
+          762,
+          793
+        ],
+        [
+          790,
+          815
+        ],
+        [
+          838,
+          808
+        ],
+        [
+          814,
+          789
+        ]
+      ],
+      "position": [
+        801.0,
+        801.25
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R02",
+      "polygon": [
+        [
+          790,
+          815
+        ],
+        [
+          820,
+          848
+        ],
+        [
+          874,
+          837
+        ],
+        [
+          838,
+          808
+        ]
+      ],
+      "position": [
+        830.5,
+        827.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R03",
+      "polygon": [
+        [
+          820,
+          848
+        ],
+        [
+          846,
+          875
+        ],
+        [
+          905,
+          864
+        ],
+        [
+          874,
+          837
+        ]
+      ],
+      "position": [
+        861.25,
+        856.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R04",
+      "polygon": [
+        [
+          846,
+          875
+        ],
+        [
+          882,
+          911
+        ],
+        [
+          940,
+          896
+        ],
+        [
+          905,
+          864
+        ]
+      ],
+      "position": [
+        893.25,
+        886.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": "notice",
+      "mark": "И",
+      "kind": "path"
+    },
+    {
+      "id": "R05",
+      "polygon": [
+        [
+          882,
+          911
+        ],
+        [
+          913,
+          943
+        ],
+        [
+          976,
+          925
+        ],
+        [
+          940,
+          896
+        ]
+      ],
+      "position": [
+        927.75,
+        918.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R06",
+      "polygon": [
+        [
+          913,
+          943
+        ],
+        [
+          942,
+          973
+        ],
+        [
+          1007,
+          955
+        ],
+        [
+          976,
+          925
+        ]
+      ],
+      "position": [
+        959.5,
+        949.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R07",
+      "polygon": [
+        [
+          942,
+          973
+        ],
+        [
+          974,
+          1006
+        ],
+        [
+          1042,
+          984
+        ],
+        [
+          1007,
+          955
+        ]
+      ],
+      "position": [
+        991.25,
+        979.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R08",
+      "polygon": [
+        [
+          974,
+          1006
+        ],
+        [
+          1026,
+          1060
+        ],
+        [
+          1091,
+          1041
+        ],
+        [
+          1042,
+          984
+        ]
+      ],
+      "position": [
+        1033.25,
+        1022.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R09",
+      "polygon": [
+        [
+          1026,
+          1060
+        ],
+        [
+          1091,
+          1041
+        ],
+        [
+          1121,
+          1074
+        ],
+        [
+          1078,
+          1086
+        ],
+        [
+          1051,
+          1086
+        ]
+      ],
+      "position": [
+        1073.4,
+        1069.4
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "partly_occluded",
+      "event": null,
+      "mark": null,
+      "note": "Нижний угол клетки обрезан рамкой; видимые соседние клетки соединены без выхода за карту.",
+      "kind": "path"
+    },
+    {
+      "id": "R10",
+      "polygon": [
+        [
+          1091,
+          1041
+        ],
+        [
+          1146,
+          1028
+        ],
+        [
+          1182,
+          1057
+        ],
+        [
+          1121,
+          1074
+        ]
+      ],
+      "position": [
+        1135.0,
+        1050.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R11",
+      "polygon": [
+        [
+          1146,
+          1028
+        ],
+        [
+          1196,
+          1015
+        ],
+        [
+          1230,
+          1044
+        ],
+        [
+          1182,
+          1057
+        ]
+      ],
+      "position": [
+        1188.5,
+        1036.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R12",
+      "polygon": [
+        [
+          1196,
+          1015
+        ],
+        [
+          1239,
+          1002
+        ],
+        [
+          1274,
+          1030
+        ],
+        [
+          1230,
+          1044
+        ]
+      ],
+      "position": [
+        1234.75,
+        1022.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": "notice",
+      "mark": "И",
+      "kind": "path"
+    },
+    {
+      "id": "R13",
+      "polygon": [
+        [
+          1239,
+          1002
+        ],
+        [
+          1279,
+          989
+        ],
+        [
+          1316,
+          1017
+        ],
+        [
+          1274,
+          1030
+        ]
+      ],
+      "position": [
+        1277.0,
+        1009.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R14",
+      "polygon": [
+        [
+          1279,
+          989
+        ],
+        [
+          1322,
+          976
+        ],
+        [
+          1359,
+          1004
+        ],
+        [
+          1316,
+          1017
+        ]
+      ],
+      "position": [
+        1319.0,
+        996.5
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R15",
+      "polygon": [
+        [
+          1322,
+          976
+        ],
+        [
+          1363,
+          964
+        ],
+        [
+          1394,
+          988
+        ],
+        [
+          1359,
+          1004
+        ]
+      ],
+      "position": [
+        1359.5,
+        983.0
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": null,
+      "kind": "path"
+    },
+    {
+      "id": "R16",
+      "polygon": [
+        [
+          1363,
+          964
+        ],
+        [
+          1420,
+          949
+        ],
+        [
+          1448,
+          970
+        ],
+        [
+          1394,
+          988
+        ]
+      ],
+      "position": [
+        1406.25,
+        967.75
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "visible",
+      "event": null,
+      "mark": "↑",
+      "kind": "path"
+    },
+    {
+      "id": "R17",
+      "polygon": [
+        [
+          1448,
+          970
+        ],
+        [
+          1394,
+          988
+        ],
+        [
+          1448,
+          1043
+        ]
+      ],
+      "position": [
+        1430.0,
+        1000.33
+      ],
+      "surface": "street",
+      "walkable": true,
+      "confidence": "partly_occluded",
+      "event": null,
+      "mark": null,
+      "note": "Улица продолжается за правый край; внешняя связь не создана.",
+      "kind": "dead_end"
+    }
+  ],
+  "edges": [
+    {
+      "from": "Q01",
+      "to": "Q02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q02",
+      "to": "Q03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q03",
+      "to": "Q04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q04",
+      "to": "Q05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q05",
+      "to": "Q06",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q06",
+      "to": "Q07",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q07",
+      "to": "Q08",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q08",
+      "to": "Q09",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q09",
+      "to": "Q10",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q10",
+      "to": "Q11",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q11",
+      "to": "Q12",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q12",
+      "to": "Q13",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q13",
+      "to": "J01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J01",
+      "to": "P01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "P01",
+      "to": "P02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J01",
+      "to": "N01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "N01",
+      "to": "J02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J02",
+      "to": "U01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "U01",
+      "to": "U02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "U02",
+      "to": "U03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "U03",
+      "to": "U04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "U04",
+      "to": "U05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "U05",
+      "to": "U06",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "U06",
+      "to": "J03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J03",
+      "to": "U07",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J02",
+      "to": "D01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "D01",
+      "to": "D02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "D02",
+      "to": "J04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J04",
+      "to": "M01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "M01",
+      "to": "M02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "M02",
+      "to": "M03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "M03",
+      "to": "J03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J03",
+      "to": "T01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "T01",
+      "to": "T02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "T02",
+      "to": "T03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "W01",
+      "to": "W02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "W02",
+      "to": "W03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "W03",
+      "to": "W04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "W04",
+      "to": "J04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "W01",
+      "to": "B01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "B01",
+      "to": "B02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "B02",
+      "to": "B03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "B03",
+      "to": "B04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "B04",
+      "to": "F01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "F01",
+      "to": "F02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "F02",
+      "to": "F03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "F03",
+      "to": "F04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "F04",
+      "to": "F05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "F05",
+      "to": "G01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "G01",
+      "to": "G02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "G02",
+      "to": "J05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "Q02",
+      "to": "A01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A01",
+      "to": "A02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A02",
+      "to": "A03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A03",
+      "to": "A04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A04",
+      "to": "A05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A05",
+      "to": "A06",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A06",
+      "to": "A07",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A07",
+      "to": "A08",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A08",
+      "to": "A09",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A09",
+      "to": "A11",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A11",
+      "to": "A12",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A12",
+      "to": "A13",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A13",
+      "to": "A14",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A14",
+      "to": "A15",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A15",
+      "to": "A16",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "A16",
+      "to": "J06",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J06",
+      "to": "H01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J06",
+      "to": "S01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S01",
+      "to": "S02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S02",
+      "to": "S03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S03",
+      "to": "S04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S04",
+      "to": "S05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S05",
+      "to": "S06",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S06",
+      "to": "S07",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S07",
+      "to": "J07",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J07",
+      "to": "S08",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S08",
+      "to": "S09",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S09",
+      "to": "S10",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S10",
+      "to": "S11",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S11",
+      "to": "S12",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S12",
+      "to": "S13",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S13",
+      "to": "S14",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S14",
+      "to": "S15",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "S15",
+      "to": "J05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J06",
+      "to": "L01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L01",
+      "to": "L02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L02",
+      "to": "L03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L03",
+      "to": "L04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L04",
+      "to": "L05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L05",
+      "to": "L06",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L06",
+      "to": "L07",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L07",
+      "to": "L08",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L08",
+      "to": "L09",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L09",
+      "to": "L10",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L10",
+      "to": "L11",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L11",
+      "to": "L12",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L12",
+      "to": "L13",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L13",
+      "to": "L14",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "L14",
+      "to": "J08",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J07",
+      "to": "E01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "E01",
+      "to": "E02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "E02",
+      "to": "E03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "E03",
+      "to": "E04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "E04",
+      "to": "E05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "E05",
+      "to": "E06",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "E06",
+      "to": "J08",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J08",
+      "to": "E07",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "J05",
+      "to": "R01",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R01",
+      "to": "R02",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R02",
+      "to": "R03",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R03",
+      "to": "R04",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R04",
+      "to": "R05",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R05",
+      "to": "R06",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R06",
+      "to": "R07",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R07",
+      "to": "R08",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R08",
+      "to": "R09",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R09",
+      "to": "R10",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R10",
+      "to": "R11",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R11",
+      "to": "R12",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R12",
+      "to": "R13",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R13",
+      "to": "R14",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R14",
+      "to": "R15",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R15",
+      "to": "R16",
+      "bidirectional": true,
+      "cost": 1
+    },
+    {
+      "from": "R16",
+      "to": "R17",
+      "bidirectional": true,
+      "cost": 1
+    }
+  ],
+  "routes": [
+    {
+      "id": "quay",
+      "name": "Набережная у мельницы",
+      "cells": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "J01"
+      ]
+    },
+    {
+      "id": "pier",
+      "name": "Подход к причалу",
+      "cells": [
+        "J01",
+        "P01",
+        "P02"
+      ]
+    },
+    {
+      "id": "port-street",
+      "name": "От порта к развилке",
+      "cells": [
+        "J01",
+        "N01",
+        "J02"
+      ]
+    },
+    {
+      "id": "upper-street",
+      "name": "Верхняя улица у стогов",
+      "cells": [
+        "J02",
+        "U01",
+        "U02",
+        "U03",
+        "U04",
+        "U05",
+        "U06",
+        "J03"
+      ]
+    },
+    {
+      "id": "east-spur",
+      "name": "Короткий конец у дальней таверны",
+      "cells": [
+        "J03",
+        "U07"
+      ]
+    },
+    {
+      "id": "diagonal-link",
+      "name": "Соединение верхней и средней улиц",
+      "cells": [
+        "J02",
+        "D01",
+        "D02",
+        "J04"
+      ]
+    },
+    {
+      "id": "middle-street",
+      "name": "Улица над колодцем",
+      "cells": [
+        "J04",
+        "M01",
+        "M02",
+        "M03",
+        "J03"
+      ]
+    },
+    {
+      "id": "far-tavern",
+      "name": "Подход к дальней таверне",
+      "cells": [
+        "J03",
+        "T01",
+        "T02",
+        "T03"
+      ]
+    },
+    {
+      "id": "well-top",
+      "name": "От колодца к средней развилке",
+      "cells": [
+        "W01",
+        "W02",
+        "W03",
+        "W04",
+        "J04"
+      ]
+    },
+    {
+      "id": "well-side",
+      "name": "Поворот вокруг колодца",
+      "cells": [
+        "W01",
+        "B01",
+        "B02",
+        "B03",
+        "B04"
+      ]
+    },
+    {
+      "id": "forge-approach",
+      "name": "Верхний подход к кузнице",
+      "cells": [
+        "B04",
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "G01",
+        "G02",
+        "J05"
+      ]
+    },
+    {
+      "id": "tree-lane",
+      "name": "Переулок за деревом",
+      "cells": [
+        "Q02",
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A11",
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16",
+        "J06"
+      ]
+    },
+    {
+      "id": "west-house",
+      "name": "Подход к дому с О",
+      "cells": [
+        "J06",
+        "H01"
+      ]
+    },
+    {
+      "id": "market-street",
+      "name": "Улица перед центральной лавкой",
+      "cells": [
+        "J06",
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "J07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "J05"
+      ]
+    },
+    {
+      "id": "pool-west",
+      "name": "Западный и южный край бассейна",
+      "cells": [
+        "J06",
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "L08",
+        "L09",
+        "L10",
+        "L11",
+        "L12",
+        "L13",
+        "L14",
+        "J08"
+      ]
+    },
+    {
+      "id": "pool-east",
+      "name": "Восточный край бассейна",
+      "cells": [
+        "J07",
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "J08"
+      ]
+    },
+    {
+      "id": "south-exit",
+      "name": "Обрезанная улица у нижнего края",
+      "cells": [
+        "J08",
+        "E07"
+      ]
+    },
+    {
+      "id": "near-tavern",
+      "name": "Улица вдоль кузницы и ближней таверны",
+      "cells": [
+        "J05",
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13",
+        "R14",
+        "R15",
+        "R16",
+        "R17"
+      ]
+    }
+  ],
+  "buildings": [
+    {
+      "id": "orders",
+      "name": "Городской Заказ",
+      "cell": "Q01",
+      "door": [
+        204,
+        475
+      ],
+      "sign": "З",
+      "sourceObjects": [
+        "S01"
+      ],
+      "services": [
+        "quest"
+      ],
+      "status": "confirmed_place",
+      "note": "Владелец уточнил: здание с З — только Заказ, не мельница."
+    },
+    {
+      "id": "mill",
+      "name": "Ветряная мельница",
+      "cell": "A06",
+      "door": [
+        17,
+        567
+      ],
+      "sign": null,
+      "sourceObjects": [
+        "T02"
+      ],
+      "services": [
+        "work",
+        "family"
+      ],
+      "status": "owner_confirmed_binding",
+      "note": "Владелец показал дверь в обрезанной слева башне ветряка. Услуги доступны с A06 через открытый двор со стороны переулка; отдельные клетки во дворе не дорисованы."
+    },
+    {
+      "id": "port",
+      "name": "Причал · порт",
+      "cell": "P02",
+      "door": [
+        665,
+        428
+      ],
+      "sign": null,
+      "sourceObjects": [
+        "T04",
+        "T05"
+      ],
+      "services": [
+        "work",
+        "delivery"
+      ],
+      "status": "mvp_binding",
+      "note": "Взаимодействие с портом назначено конечной клетке короткого подхода; отдельные клетки на настиле не дорисованы."
+    },
+    {
+      "id": "waterfront-house",
+      "name": "Прибрежный дом",
+      "cell": "J01",
+      "door": [
+        758,
+        474
+      ],
+      "sign": null,
+      "sourceObjects": [
+        "T06"
+      ],
+      "services": [],
+      "status": "unassigned"
+    },
+    {
+      "id": "shop",
+      "name": "Центральная лавка",
+      "cell": "S12",
+      "door": [
+        604,
+        739
+      ],
+      "sign": "Л",
+      "sourceObjects": [
+        "T09",
+        "S02"
+      ],
+      "services": [
+        "shop"
+      ],
+      "status": "mvp_binding",
+      "note": "Эта Л выбрана лавкой первой партии; игровое назначение — адаптация."
+    },
+    {
+      "id": "far-shop",
+      "name": "Травы у ворот",
+      "cell": "U06",
+      "door": [
+        1177,
+        491
+      ],
+      "sign": "Л",
+      "sourceObjects": [
+        "T08",
+        "S03"
+      ],
+      "services": [
+        "potions"
+      ],
+      "status": "confirmed_place",
+      "note": "Владелец подтвердил вторую лавку. Специализация на зельях и цены — адаптация."
+    },
+    {
+      "id": "city-entry",
+      "name": "Вход в Товилис",
+      "cell": "U07",
+      "door": [
+        1246,
+        501
+      ],
+      "sign": null,
+      "sourceObjects": [
+        "S03",
+        "S04"
+      ],
+      "services": [
+        "arrival"
+      ],
+      "status": "owner_confirmed_binding",
+      "note": "Владелец указал вход справа между лавкой и трактиром. Использован существующий конец подхода U07; внешние клетки не добавлены."
+    },
+    {
+      "id": "tavern",
+      "name": "Солёный якорь · дальняя таверна",
+      "cell": "T03",
+      "door": [
+        1381,
+        526
+      ],
+      "sign": "Т",
+      "sourceObjects": [
+        "T08",
+        "S04"
+      ],
+      "services": [
+        "food",
+        "ale",
+        "dice",
+        "rest",
+        "wait",
+        "defeat_return"
+      ],
+      "status": "confirmed_place"
+    },
+    {
+      "id": "forge",
+      "name": "Кузница",
+      "cell": "J05",
+      "door": [
+        803,
+        748
+      ],
+      "sign": "К",
+      "sourceObjects": [
+        "T13",
+        "S06"
+      ],
+      "services": [
+        "equipment"
+      ],
+      "status": "confirmed_place",
+      "note": "Вход назначен клетке перед воротами К. Плитка двора — часть рисунка здания, в уличный граф не включена."
+    },
+    {
+      "id": "near-tavern",
+      "name": "Золотой фонарь · ближняя таверна",
+      "cell": "R16",
+      "door": [
+        1384,
+        947
+      ],
+      "sign": "Т",
+      "sourceObjects": [
+        "T14",
+        "S05"
+      ],
+      "services": [
+        "food",
+        "ale",
+        "dice",
+        "rest",
+        "wait"
+      ],
+      "status": "confirmed_place",
+      "note": "15 октября 2026 года владелец подтвердил вторую таверну: обе работают круглосуточно."
+    },
+    {
+      "id": "west-house",
+      "name": "Дом с О",
+      "cell": "L03",
+      "door": [
+        110,
+        906
+      ],
+      "sign": "О",
+      "sourceObjects": [
+        "T16",
+        "S07"
+      ],
+      "services": [],
+      "status": "unassigned",
+      "note": "Подход назначен ближайшей клетке у видимой двери; назначение здания неизвестно. Прямого перехода от вывески через крышу нет."
+    }
+  ],
+  "closedExits": [
+    {
+      "cell": "E07",
+      "side": "bottom"
+    },
+    {
+      "cell": "R17",
+      "side": "right"
+    }
+  ],
+  "reviewItems": [
+    {
+      "id": "tree-occlusion",
+      "title": "Клетки за деревом",
+      "cells": [
+        "A02",
+        "A03",
+        "A04"
+      ],
+      "note": "Часть границ закрыта листвой. Контуры продолжены между видимыми концами; число клеток требует проверки владельцем."
+    },
+    {
+      "id": "west-wide-cell",
+      "title": "Широкий участок у левой крыши",
+      "cells": [
+        "A11",
+        "A16",
+        "H01"
+      ],
+      "note": "У A16 нет видимых внутренних перегородок. В рабочей разметке это одна клетка, а не добавленная сетка."
+    },
+    {
+      "id": "port-binding",
+      "title": "Точка взаимодействия с портом",
+      "cells": [
+        "P02"
+      ],
+      "note": "Привязка к причалу нужна для заказа первой партии; она не восстанавливает неизвестные исторические правила входа."
+    },
+    {
+      "id": "unknown-signs",
+      "title": "Знаки без заданной механики",
+      "cells": [
+        "S10",
+        "H01",
+        "U07",
+        "L07"
+      ],
+      "note": "П, О, Ж.К., вопросы и стрелки сохранены как пометки. Они не задают односторонние связи или дополнительные события."
+    },
+    {
+      "id": "cropped-edges",
+      "title": "Обрезанные края карты",
+      "cells": [
+        "R09",
+        "E07",
+        "R17"
+      ],
+      "note": "Нижний угол R09 частично обрезан. E07 и R17 завершают видимые улицы: внешние клетки и переходы не добавлены."
+    }
+  ]
+}

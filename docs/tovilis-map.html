@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Товилис — клетки и маршруты</title>
+  <link rel="stylesheet" href="tovilis-map.css">
+  <script defer src="tovilis-map-data.js"></script>
+  <script defer src="tovilis-map.js"></script>
+</head>
+<body>
+  <header>
+    <div><span class="eyebrow">АЛЫЙ МИР · КАРТА V9</span><h1>Товилис <span>клетки и маршруты</span></h1></div>
+    <div class="header-right"><span class="status">Рабочая разметка</span><a href="TOVILIS_MAP.md">Описание данных ↗</a></div>
+  </header>
+  <main>
+    <section class="map-panel" aria-label="Карта Товилиса">
+      <div class="map-toolbar">
+        <div class="button-group"><button id="streets-view">Улицы</button><button id="whole-view">Вся карта</button><button id="art-only" aria-pressed="false">Только рисунок</button></div>
+        <div class="button-group"><button id="zoom-out" aria-label="Уменьшить">−</button><span id="zoom-readout">100%</span><button id="zoom-in" aria-label="Увеличить">+</button></div>
+      </div>
+      <div id="viewport">
+        <svg id="map" viewBox="0 425 1448 661" role="group" aria-label="Клетки, связи и входы. Выберите клетку для просмотра.">
+          <image href="../assets/maps/working/tovilis-v9.png" x="0" y="0" width="1448" height="1086"/>
+          <g id="cells-layer"></g><g id="edges-layer" aria-hidden="true"></g>
+          <g id="path-layer" aria-hidden="true"></g><g id="labels-layer" aria-hidden="true"></g>
+          <g id="entrances-layer"></g><g id="exits-layer" aria-hidden="true"></g>
+          <g id="selection-layer" aria-hidden="true"></g>
+        </svg>
+        <div id="map-hint">Нажмите клетку · перетаскивайте карту · колесо меняет масштаб</div>
+      </div>
+      <div class="map-footer"><span id="stats"></span><span>Один переход между клетками = один шаг</span></div>
+    </section>
+    <aside>
+      <section class="controls"><h2>Слои карты</h2><div class="layers">
+        <label><input type="checkbox" id="show-cells" checked><i class="swatch cell-swatch"></i>Клетки</label>
+        <label><input type="checkbox" id="show-edges" checked><i class="swatch edge-swatch"></i>Связи</label>
+        <label><input type="checkbox" id="show-labels"><i class="swatch label-swatch"></i>Номера</label>
+        <label><input type="checkbox" id="show-entrances" checked><i class="swatch entrance-swatch"></i>Входы</label>
+      </div><p class="muted">Оранжевый контур — неполная видимость границы. Кружок на линии пути — перекрёсток.</p></section>
+      <section class="cell-detail"><div class="section-title"><h2 id="cell-title">Выберите клетку</h2><span id="cell-kind" class="pill"></span></div><div id="cell-info"></div><div id="neighbours"></div>
+        <div class="button-group selection-actions"><button id="set-start">Начало пути</button><button id="set-end">Конец пути</button></div>
+      </section>
+      <section><h2>Проверка маршрута</h2>
+        <label class="field" for="route-preset">Городские места</label>
+        <select id="route-preset"><option value="">Выбрать пример…</option><option value="start-mill">Старт → мельница</option><option value="mill-shop">Мельница → лавка</option><option value="shop-port">Лавка → порт</option><option value="forge-tavern">Кузница → таверна</option></select>
+        <div class="route-points"><span id="route-start">—</span><span>→</span><span id="route-end">—</span><button id="clear-path" title="Сбросить маршрут" aria-label="Сбросить маршрут">×</button></div>
+        <p id="route-info" aria-live="polite">Выберите начало и конец на карте или готовый пример.</p>
+        <p class="muted">Показан кратчайший путь по разрешённым связям. При игре каждый перекрёсток завершит текущий бросок.</p>
+      </section>
+      <section><h2>Входы и места</h2><div id="building-list"></div></section>
+      <section class="review"><h2>Места для сверки <span id="review-count"></span></h2><div id="review-list"></div></section>
+      <footer>Координаты относятся к исходному рисунку 1448 × 1086. Полотно карты сохранено без изменений.<br><a id="download-data" href="../assets/maps/geometry/tovilis-v9.json" download>Скачать JSON разметки ↓</a></footer>
+    </aside>
+  </main>
+</body>
+</html>

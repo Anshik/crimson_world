@@ -1,0 +1,65 @@
+{
+  "created_on": "2026-10-13",
+  "source_key": "IMG046",
+  "source": "assets/maps/originals/cities/Товилис.JPG",
+  "source_sha256": "9c00bba16e3e8a1820030cecffaeb5cfea8e0d720dfe71f3c3fcdcafd7e9517e",
+  "source_dimensions": [
+    2592,
+    1944
+  ],
+  "tool": "image_gen.imagegen",
+  "mode": "built-in edit / precise-object-edit",
+  "edit_target": "assets/maps/working/tovilis-v8.png",
+  "inputs": [
+    {
+      "path": "assets/maps/working/tovilis-v8.png",
+      "sha256": "dac5f58326399d3fe4fb9e52e3323ebc5da53543aa53ddc445e727a616f2493c",
+      "role": "edit_target"
+    }
+  ],
+  "prompt": "assets/maps/working/tovilis-v9.prompt.txt",
+  "output": "assets/maps/working/tovilis-v9.png",
+  "output_sha256": "cca9d2ac88d3492b315cd3e64e667beb877215bd206cb1a5e69150b8c35e68ff",
+  "output_bytes": 2624885,
+  "output_dimensions": [
+    1448,
+    1086
+  ],
+  "status": "accepted_visual_checkpoint_not_cell_verified",
+  "scope": "Трава у фундаментов и открытая земля. Синяя игровая разметка отделена от бирюзовых декоративных штрихов.",
+  "review": "На общем виде и увеличенных фрагментах проверены основания большого ближнего правого дома, центрального сруба, бочек и дерева, мельницы, башни, портового дома, дальних домов, ограды и левого обрезанного дома. Яркая бирюзовая кайма заменена песочным грунтом и отдельными приглушёнными зелёными травинками. Земля стала светлее и менее однородной по тону; видны карандашные штрихи и небольшие пучки травы между дорожками. Сине-фиолетовые клетки, Ж.К. и мелкие знаки под центральным домом остаются читаемыми. Семь вывесок, флаг, солнца и цвет огня узнаваемо сохранены. Полная поклеточная идентичность исходнику не проверена.",
+  "cell_by_cell_verified": false,
+  "signs_visually_checked": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07"
+  ],
+  "palette_intent": {
+    "note": "Цветовые ориентиры задания, не измеренные пиксели.",
+    "grass": [
+      "#8E9A70",
+      "#7F8D61",
+      "#B8BD94"
+    ],
+    "ground": [
+      "#DDE0C8",
+      "#DDD2B8",
+      "#EAE7D8"
+    ]
+  },
+  "comparison": "docs/tovilis-comparison.html?left=v9&right=v8",
+  "objects": "docs/tovilis-objects.json",
+  "checkpoint": {
+    "version": "v9",
+    "confirmed_on": "2026-10-13",
+    "source": "Владелец в чате одобрил траву и попросил остановить разработку картинки и зафиксировать результат.",
+    "visual_version_accepted": true,
+    "further_image_editing": "stopped_at_owner_request",
+    "resume_policy": "Продолжать перерисовку только по новой просьбе владельца.",
+    "gameplay_validation": "Полная проверка всех клеток и переходов остаётся незавершённой."
+  }
+}
