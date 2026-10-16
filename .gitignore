@@ -1,8 +1,11 @@
 # Publish only application code and its maintained supporting files.
 /*
 !/.gitignore
+!/AGENTS.md
 !/README.md
 !/requirements.txt
+!/requirements.lock
+!/requirements-qa.txt
 !/game/
 !/server/
 !/tests/
@@ -17,10 +20,17 @@
 !/assets/maps/
 /assets/characters/*
 !/assets/characters/dwarf-directions-v2.png
+!/assets/characters/*-directions-v1.png
+!/assets/characters/manifest.json
+!/assets/characters/prompts.txt
 /assets/illustrations/*
 !/assets/illustrations/equipment-v1.png
 !/assets/illustrations/events-v1.png
 !/assets/illustrations/finds-v1.png
+!/assets/illustrations/finds-v2.png
+!/assets/illustrations/finds-v2.prompt.txt
+!/assets/illustrations/hunting-v1.png
+!/assets/illustrations/hunting-v1.prompt.txt
 !/assets/illustrations/items-v1.png
 !/assets/illustrations/miller-v3.png
 !/assets/illustrations/places-v1.png
@@ -34,7 +44,10 @@
 !/assets/maps/working/tovilis-v9.png
 !/assets/maps/working/tovilis-v9.json
 /docs/*
+!/docs/ADMIN.md
 !/docs/DEPLOYMENT.md
+!/docs/decisions/
+!/docs/TOVILIS_GAME.md
 !/docs/TOVILIS_MAP.md
 !/docs/tovilis-map-data.js
 !/docs/tovilis-map.html
@@ -46,8 +59,21 @@
 /tools/*
 !/tools/build_tovilis_map.py
 !/tools/validate_tovilis_map.py
+!/tools/backup_game.py
+!/tools/package_game.py
+!/tools/index_notices.py
+!/tools/check_tovilis_online_api.py
+!/tools/check_tovilis_safari.py
+!/tools/check_tovilis_browser.py
+!/tools/safari_game_checks.py
+!/tools/playtest_bots.py
+!/tools/watch_game_bots.py
+!/tools/check_admin_headless.py
+!/tools/check_bank_headless.py
+!/tools/check_hunting_headless.py
 
 # Local credentials and generated/runtime state must never be published.
+/.private/
 .env
 .env.*
 !.env.example
@@ -70,6 +96,10 @@ build/
 .pytest_cache/
 .coverage
 coverage/
+/data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
 .DS_Store
 Thumbs.db
 Desktop.ini

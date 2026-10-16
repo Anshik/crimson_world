@@ -4,12 +4,12 @@
   else root.createTovilisEquipment = content => factory(content, root.TOVILIS_CHARACTERS);
 })(typeof window === 'undefined' ? globalThis : window, (content, characters) => {
   const slots = content.equipment.slots;
-  const definition = id => Object.hasOwn(content.items, id) ? content.items[id] : Object.hasOwn(content.finds, id) ? content.finds[id] : Object.hasOwn(content.artifacts, id) ? content.artifacts[id] : null;
+  const definition = id => Object.hasOwn(content.items, id) ? content.items[id] : Object.hasOwn(content.finds, id) ? content.finds[id] : Object.hasOwn(content.artifacts, id) ? content.artifacts[id] : Object.hasOwn(content.hunting.items, id) ? content.hunting.items[id] : null;
   const require = (ok, message) => { if (!ok) throw Error(message); };
   function owned(hero) {
     return {shortSword: 1, armor: 1, bronzeHelmet: 1, travelCloak: 1,
       sword: Number(hero.sword), shield: Number(hero.shield),
-      ...hero.finds, ...Object.fromEntries(hero.artifacts.map(id => [id, 1]))};
+      ...(hero.sling ? {sling:1} : {}), ...(hero.huntingBag || {}), ...hero.finds, ...Object.fromEntries(hero.artifacts.map(id => [id, 1]))};
   }
   function stats(hero) {
     const base = characters.baseFor(hero, content.equipment.base), result = {...base, attackBonus: base.strength, manaBonus: 0, peaceful: false, closedSocietyWard: false};

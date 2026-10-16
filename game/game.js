@@ -5,11 +5,11 @@
   let atlas = atlasFor(null);
   const cells = new Map(map.cells.map(c => [c.id, c]));
   const $ = id => document.getElementById(id), svg = $('game-map'), ns = 'http://www.w3.org/2000/svg';
-  const KEY = 'crimsonworld.tovilis.game.v8', ROUTE_KEY = KEY + '.route', V7_KEY = 'crimsonworld.tovilis.game.v7', V6_KEY = 'crimsonworld.tovilis.game.v6', PREVIOUS_KEY = 'crimsonworld.tovilis.game.v5', SECOND_KEY = 'crimsonworld.tovilis.game.v4', THIRD_KEY = 'crimsonworld.tovilis.game.v3', FOURTH_KEY = 'crimsonworld.tovilis.game.v2', OLD_KEY = 'crimsonworld.tovilis.walk.v1';
+  const KEY = 'crimsonworld.tovilis.game.v9', ROUTE_KEY = KEY + '.route', V8_KEY = 'crimsonworld.tovilis.game.v8', V7_KEY = 'crimsonworld.tovilis.game.v7', V6_KEY = 'crimsonworld.tovilis.game.v6', PREVIOUS_KEY = 'crimsonworld.tovilis.game.v5', SECOND_KEY = 'crimsonworld.tovilis.game.v4', THIRD_KEY = 'crimsonworld.tovilis.game.v3', FOURTH_KEY = 'crimsonworld.tovilis.game.v2', OLD_KEY = 'crimsonworld.tovilis.walk.v1';
   const diceUI = window.createTovilisDice();
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let state = rules.create(), serialized = null, error = '', errorDetails = '', animation = 0;
-  let view = [0, 0, 1448, 1086], drag = null, dragged = false, destination = null, targetEnemy = null, sceneMode = null, scenePlace = null, toastTimer = null;
+  let view = [0, 0, 1448, 1086], drag = null, dragged = false, destination = null, targetEnemy = null, sceneMode = null, scenePlace = null, toastTimer = null, mapHintTimer = null, mapHintText = '', mapHintActive = false;
   const die = (sides = 6) => Math.floor(Math.random() * sides) + 1;
   function node(tag, attrs, parent, text) {
     const el = document.createElementNS(ns, tag);
@@ -25,7 +25,8 @@
   }
   function illustration(parent, sheet, index, label, className = 'scene-art') {
     const art = node('svg', {viewBox: `${index % 3 * 512} ${Math.floor(index / 3) * 512} 512 512`, preserveAspectRatio: 'xMidYMid slice', class: className, role: 'img', 'aria-label': label, overflow: 'hidden'}, parent);
-    node('image', {href: `../assets/illustrations/${sheet}-v1.png`, width: 1536, height: 1024}, art);
+    const file = rules.content.illustrationSheets?.[sheet] || `${sheet}-v1.png`;
+    node('image', {href: `../assets/illustrations/${file}`, width: 1536, height: 1024}, art);
     return art;
   }
   const placeArt = {tavern: 1, 'near-tavern': 0, forge: 2, orders: 3, shop: 4, port: 5, 'city-entry': 5};
@@ -76,7 +77,7 @@
       const previous = state, text = JSON.stringify(next);
       localStorage.setItem(KEY, text);
       if (!force && previous.phase === 'won' && next.phase === 'ready') { sceneMode = null; scenePlace = null; }
-      else if (force || next.phase === 'ready' && (['moving', 'notice', 'outcome', 'work', 'work-result', 'tavern-game'].includes(previous.phase))) {
+      else if (force || next.phase === 'ready' && (['moving', 'notice', 'outcome', 'work', 'work-result', 'tavern-game', 'hunting'].includes(previous.phase))) {
         const place = rules.at(next.position).find(b => rules.content.places[b.id]);
         sceneMode = place ? 'place' : null; scenePlace = place?.id || null;
       }
@@ -94,20 +95,26 @@
       originals.set(name, rules[name]);
       rules[name] = (...args) => { calls.push({method:name, args:args.slice(1).map(value => typeof value === 'function' ? null : value)}); return originals.get(name)(...args); };
     }
-    try { transition(state); } finally { for (const [name, fn] of originals) rules[name] = fn; }
+    try { transition(state); } catch (cause) { for (const [name, fn] of originals) rules[name] = fn; error = cause.message; errorDetails = cause.message; render(); return false; } finally { for (const [name, fn] of originals) rules[name] = fn; }
     const call = calls.at(-1);
     if (!call) return false;
     online.context({phase:state.phase, cell:state.position, action:call.method, version:window.TOVILIS_CONTENT_VERSION || 6});
     const payload = {
       choose: {next:call.args[0], stopBuilding:call.args[1] ?? null},
+      begin: {next:state.selection?.next ?? null, stopBuilding:state.selection?.stopBuilding ?? null},
+      huntAction: {action:call.args[0], target:call.args[2] ?? 0},
       noticeAction: {action:call.args[0]},
+      encounterAction: {action:call.args[0]},
       service: {action:call.args[0], quantity:call.args[2] ?? 1},
+      bankTransfer: {action:call.args[0], amount:call.args[1]},
       equip: {slot:call.args[0], id:call.args[1] ?? null},
-      battle: {action:call.args[0], target:call.args[2] ?? null},
-      create: {name:call.args[0]}
+      battle: {action:call.args[0], targetId:call.args[2] ?? null},
+      playDice: {stake:call.args[1] ?? 1},
+      finishWork: {}, cancelWork: {}, drink: {}, arrive: {}, acknowledge: {},
+      rename: {name:call.args[0]}, create: {name:call.args[0]}
     }[call.method] || {};
     online.command(call.method, payload, next => {
-      try { const authoritative = next.state || next.game || next; state = rules.validate(authoritative); serialized = JSON.stringify(state); error = ''; errorDetails = ''; render(); } catch (cause) { error = 'Сервер прислал неподходящее состояние партии.'; errorDetails = cause.message; render(); }
+      try { const authoritative = next.state || next.game || next; state = followRoute(rules.validate(authoritative)); serialized = JSON.stringify(state); error = ''; errorDetails = ''; render(); } catch (cause) { error = 'Сервер прислал неподходящее состояние партии.'; errorDetails = cause.message; render(); }
     }).catch(cause => { error = 'Действие не удалось выполнить на сервере.'; errorDetails = cause.message; render(); });
     return true;
   }
@@ -122,12 +129,12 @@
     }
     animation += 1; diceUI.cancel();
     try {
-      const raw = localStorage.getItem(KEY), old = raw === null ? localStorage.getItem(V7_KEY) ?? localStorage.getItem(V6_KEY) ?? localStorage.getItem(PREVIOUS_KEY) ?? localStorage.getItem(SECOND_KEY) ?? localStorage.getItem(THIRD_KEY) ?? localStorage.getItem(FOURTH_KEY) ?? localStorage.getItem(OLD_KEY) : null;
+      const raw = localStorage.getItem(KEY), old = raw === null ? localStorage.getItem(V8_KEY) ?? localStorage.getItem(V7_KEY) ?? localStorage.getItem(V6_KEY) ?? localStorage.getItem(PREVIOUS_KEY) ?? localStorage.getItem(SECOND_KEY) ?? localStorage.getItem(THIRD_KEY) ?? localStorage.getItem(FOURTH_KEY) ?? localStorage.getItem(OLD_KEY) : null;
       const restored = raw !== null ? rules.validate(JSON.parse(raw)) : old !== null ? rules.migrate(JSON.parse(old)) : rules.create();
       state = restored;
       if (state.selection?.stopBuilding === 'far-shop' && rules.directions(state.position).find(d => d.next === state.selection.next)?.building?.id !== 'far-shop') state = {...state, selection: {...state.selection, stopBuilding: null}};
       serialized = raw; error = ''; errorDetails = '';
-      const savedRoute = localStorage.getItem(ROUTE_KEY) ?? (raw === null && old !== null && [6,7].includes(JSON.parse(old).version) ? localStorage.getItem(`crimsonworld.tovilis.game.v${JSON.parse(old).version}.route`) : null);
+      const savedRoute = localStorage.getItem(ROUTE_KEY) ?? (raw === null && old !== null && [6,7,8].includes(JSON.parse(old).version) ? localStorage.getItem(`crimsonworld.tovilis.game.v${JSON.parse(old).version}.route`) : null);
       destination = building(savedRoute) && state.position !== building(savedRoute).cell && state.phase !== 'won' ? savedRoute : null;
       state = followRoute(state);
       if (raw === null && old !== null) setDestination(destination);
@@ -138,11 +145,13 @@
   }
   function act(transition) {
     if (error || diceUI.busy) return false;
+    if (online?.enabled && online.busy) return false;
     if (online?.enabled) return onlineTransition(transition);
     try { const next = transition(state); if (next === state) return true; return save(next); }
     catch (cause) { $('status').textContent = cause.message; return false; }
   }
   function select(next) {
+    clearMapHint();
     if (state.phase === 'ready' && state.selection?.next === next && !error) { $('roll').click(); return; }
     act(s => rules.choose(s, next));
   }
@@ -195,16 +204,21 @@
     return g;
   }
   function renderMap(options) {
-    for (const id of ['choice-layer', 'preview-layer', 'target-layer', 'place-layer', 'guide-layer']) $(id).replaceChildren();
+    for (const id of ['choice-layer', 'preview-layer', 'target-layer', 'place-layer', 'other-player-layer', 'guide-layer']) $(id).replaceChildren();
     positionHero(cells.get(state.position).position);
     const night = rules.clock(state.ticks).night;
+    if (online?.enabled) for (const player of online.state.presence || []) {
+      const cell = cells.get(player.cell); if (!cell) continue;
+      const [x, y] = cell.position, group = node('g', {class:'other-player-marker', 'aria-label':`${player.name || 'Игрок'} рядом`}, $('other-player-layer'));
+      node('circle', {cx:x, cy:y-25, r:15, class:'other-player-dot'}, group); node('text', {x, y:y-46, class:'other-player-name'}, group, (player.name || 'Игрок').slice(0, 12));
+    }
     for (const b of map.buildings.filter(b => rules.content.places[b.id])) {
       const closed = night && ['mill', 'shop', 'far-shop', 'forge'].includes(b.id);
       const label = {orders: 'З', mill: 'М', port: '⚓', shop: 'Л', 'far-shop': 'Л', forge: 'К', tavern: 'Т', 'near-tavern': 'Т', 'city-entry': '↪', 'west-house': 'О'}[b.id];
       const marker = mapMarker($('place-layer'), b.cell, label, closed ? 'closed' : '', () => { if (state.phase === 'ready') { sceneMode = 'place'; scenePlace = b.id; render(); } }, b.door, `${rules.content.places[b.id].name}${closed ? ' · ночью закрыто' : ''}`);
       marker.dataset.building = b.id; node('title', {}, marker, `${rules.content.places[b.id].name}${closed ? ' · ночью закрыто' : ''}`);
     }
-    for (const c of map.cells.filter(c => c.event === 'encounter')) mapMarker($('place-layer'), c.id, 'В', 'event-marker', () => { $('status').textContent = 'Здесь возможна городская встреча. Ночью бандиты требуют деньги или нападают.'; }, null, 'Возможная случайная встреча');
+    for (const c of map.cells.filter(c => c.event === 'encounter')) mapMarker($('place-layer'), c.id, 'В', 'event-marker', () => { showMapHint('Здесь возможна городская встреча. Ночью бандиты требуют деньги или нападают.'); }, null, 'Возможная случайная встреча');
     if (destination && state.phase === 'ready') {
       const b = building(destination), path = rules.shortestPath(state.position, b.cell);
       node('polyline', {points: path.map(id => cells.get(id).position.join(',')).join(' '), class: 'guide-line'}, $('guide-layer'));
@@ -241,7 +255,7 @@
     if (building.id === 'mill') millerIllustration(parent);
     if (building.id === 'far-shop') illustration(parent,'portraits',0,'Травник у входа в город');
     html('span', parent, here ? 'ВЫ НА МЕСТЕ' : 'МЕСТО НА КАРТЕ', 'eyebrow'); html('h2', parent, rules.isTavern(building.id) ? place.name.split(' · ')[0] : place?.name || building.name);
-    html('span', parent, closed ? `Закрыто · до утра ${18 - state.ticks % 18} х.` : rules.isTavern(building.id) ? 'Открыто круглосуточно' : building.id === 'west-house' ? 'Назначение неизвестно' : 'Открыто', 'context-badge' + (closed ? ' closed' : ''));
+    html('span', parent, closed ? `Закрыто · до утра ${18 - state.ticks % 18} х.` : rules.isTavern(building.id) ? 'Открыто круглосуточно' : building.id === 'west-house' ? 'Открыт круглосуточно' : 'Открыто', 'context-badge' + (closed ? ' closed' : ''));
     if (rules.isTavern(building.id)) {
       const about = html('details',parent,undefined,'place-about'); html('summary',about,'О заведении'); html('p',about,place.description);
     } else html('p', parent, place?.description || 'Обычный городской дом.');
@@ -252,6 +266,7 @@
       actionButton(actions, `Идти в эту сторону · ${distance} кл.`, () => guideTo(building.id), {primary: true, action: 'guide-place'});
       return;
     }
+    if (building.id === 'west-house') { renderBank(parent); return; }
     const offers = rules.services(state, building.id).sort((a, b) => Number(['wait-opening', 'wait-work'].includes(b.id)) - Number(['wait-opening', 'wait-work'].includes(a.id)));
     if (rules.isTavern(building.id)) {
       actions.classList.add('tavern-actions');
@@ -260,12 +275,13 @@
     for (const offer of offers) {
       if (offer.id === 'food') continue;
       const selling = offer.id.startsWith('sell-');
-      const itemId = selling ? offer.id.slice(5) : offer.id, item = rules.content.items[itemId] || rules.content.finds[itemId] || rules.content.artifacts[itemId];
+      const itemId = selling ? offer.id.slice(5) : offer.id, item = rules.content.items[itemId] || rules.content.finds[itemId] || rules.content.artifacts[itemId] || rules.content.hunting.items[itemId];
       if(item) {
         const card=html('article',actions,undefined,'item-offer');itemIllustration(card,item);
-        const info=html('div',card,undefined,'item-offer-info');html('strong',info,item.name);html('p',info,item.detail);html('small',info,`Вес ${weightText(item.weight)}`);
+        const info=html('div',card,undefined,'item-offer-info');html('strong',info,item.name);renderItemFacts(info,item);
         actionButton(info,`${selling ? offer.interest ? 'Предложить торговцу' : 'Продать' : 'Купить'} · ${selling ? '+' + offer.payout : offer.cost} ${word(selling ? offer.payout : offer.cost,'монета','монеты','монет')}`,()=>offer.interest ? rolled(s=>rules.service(s,offer.id,die),'trade') : act(s=>rules.service(s,offer.id,die)),{primary:!selling,disabled:!offer.enabled,action:offer.id});
-        if (offer.interest) html('small', info, 'Покупка на 1–3 из 6. Решение действует до завтра. Цена — половина нейтральной.', 'hint');
+        if (offer.interest) html('small', info, 'Интерес торговца — 50/50: купит на 1–3 из 6. Решение действует до завтра. Выкуп — половина нейтральной цены.', 'hint');
+        else if (selling) html('small', info, 'Продажа по оценке, без пробы интереса.', 'sale-rule');
         if(offer.reason)html('small',info,offer.reason,'offer-reason');
         continue;
       }
@@ -280,7 +296,39 @@
     }
     if (['mill', 'port', 'forge'].includes(building.id)) { const shifts = rules.workStatus(state); html('p', parent, `Смены сегодня: ${shifts.used} из 2. Одна смена — 3 хода времени.`, 'work-limit'); }
     if (state.quest === 'active' && building.id === 'orders') html('p', parent, state.hero.net ? 'Сеть куплена, доставьте её в порт.' : 'Нужна сеть из лавки снастей за 5 монет.', 'hint');
+    if (building.id === 'city-entry') html('p',parent,'Окрестности Товилиса: охота — 3 хода времени и 1 порция еды сверх обычного питания каждые 6 ходов. Праща продаётся в лавках за 2 монеты. После охоты вы остаётесь на U07.','hint');
     if (building.id === 'city-entry') actionButton(actions, 'Первое поручение', () => {sceneMode='quest';render();}, {primary:true,action:'view-first-order'});
+  }
+  function renderBank(parent) {
+    const account = rules.bankStatus(state), cash = state.hero.coins;
+    const box = html('section', parent, undefined, 'bank-panel');
+    html('p', box, `Наличные: ${cash} · На счёте: ${account.balance}`, 'bank-balances');
+    const row = html('div', box, undefined, 'bank-controls');
+    const label = html('label', row, 'Сумма монет');
+    const amount = html('input', label); amount.id = 'bank-amount'; amount.type = 'number'; amount.min = '1'; amount.step = '1'; amount.value = '1'; amount.inputMode = 'numeric';
+    // «Всё» uses the selected source; both actions have independent previews.
+    const source = html('label', row, 'Всё для операции');
+    const direction = html('select', source); direction.id = 'bank-direction'; direction.setAttribute('aria-label', 'Направление операции');
+    for (const [value, text] of [['deposit', 'Положить'], ['withdraw', 'Снять']]) { const option = html('option', direction, text); option.value = value; }
+    actionButton(row, 'Всё', () => { amount.value = String(direction.value === 'deposit' ? cash : account.balance); update(); }, {action:'bank-all'});
+    const preview = html('p', box, undefined, 'bank-preview'); preview.id = 'bank-preview'; preview.setAttribute('aria-live', 'polite');
+    const actions = html('div', box, undefined, 'context-actions');
+    const deposit = actionButton(actions, 'Положить', () => act(s => rules.bankTransfer(s, 'deposit', Number(amount.value))), {primary:true, action:'bank-deposit'});
+    const withdraw = actionButton(actions, 'Снять', () => act(s => rules.bankTransfer(s, 'withdraw', Number(amount.value))), {action:'bank-withdraw'});
+    function update() {
+      const n = Number(amount.value), valid = Number.isSafeInteger(n) && n > 0;
+      deposit.disabled = Boolean(error) || !valid || n > cash || !Number.isSafeInteger(account.balance + n);
+      withdraw.disabled = Boolean(error) || !valid || n > account.balance || !Number.isSafeInteger(cash + n);
+      const line = (text, enabled, cashAfter, bankAfter) => `${text}: ${enabled ? `наличные ${cashAfter}, счёт ${bankAfter}` : 'недоступно'}`;
+      preview.textContent = valid ? `${line('Положить', !deposit.disabled, cash-n, account.balance+n)}. ${line('Снять', !withdraw.disabled, cash+n, account.balance-n)}.` : 'Введите положительное целое число монет.';
+    }
+    amount.oninput = update; direction.onchange = update; update();
+    html('h3', box, 'История операций');
+    if (!account.history.length) html('p', box, 'Операций пока нет.');
+    const entries = account.history.slice().reverse();
+    const history = (target, items) => { const list = html('ol', target, undefined, 'bank-history'); for (const e of items) html('li', list, `Ход ${e.turn} · ${e.action === 'deposit' ? 'Внесено' : 'Снято'} ${e.amount} · наличные ${e.cash}, счёт ${e.balance}`); };
+    history(box, entries.slice(0, 5));
+    if (entries.length > 5) { const details = html('details', box); html('summary', details, 'Предыдущие операции'); history(details, entries.slice(5)); }
   }
   function renderFoodShop(parent) {
     const inn = rules.tavernProfile(state);
@@ -340,12 +388,12 @@
     else if(kind==='work')display={title:'Плата за смену',rolls:[{value:state.job.roll,label:'Оплата · d6'}],result:`Заработано ${state.job.pay} ${word(state.job.pay,'монета','монеты','монет')}`,detail:'Плата уже в кошельке.'};
     else if(kind==='search')display={title:'Кто сыграет в кости?',rolls:[{value:state.tavernGame.searchRoll,label:'Поиск · d6'}],result:state.tavernGame.stage==='found'?'Партнёр нашёлся':'Пока никто не играет',detail:'Желающий находится на 4–6.'};
     else if(kind==='trade'){const t=state.lastTrade;display={title:'Нужна ли вещь торговцу?',rolls:[{value:t.roll,label:'Интерес · d6'}],result:t.accepted?`Вещь продана · +${t.payout} ${word(t.payout,'монета','монеты','монет')}`:'Сегодня вещь не нужна',detail:t.accepted?'Сделка завершена, монеты в кошельке.':'Вещь остаётся у вас. Новая попытка в этой лавке — завтра.'};}
-    else if(kind==='notice'){const n=state.notice;if(n.rolls.length)display={title:rules.noticeCard(state).title,rolls:n.rolls.map(r=>({value:r.value,label:`${r.label} · d${r.sides}`})),result:'Результат определён',detail:n.text};}
+    else if(kind==='notice'){const n=state.notice;if(n.rolls.length)display={title:rules.noticeCard(state).title,rolls:n.rolls.map(r=>({value:r.value,label:`${r.label} · d${r.sides}`})),result:n.text};}
     else if(kind==='wager'){const g=state.tavernGame;display={title:'Кости в таверне',rolls:[{value:g.heroRoll,label:'Твой кубик'},{value:g.visitorRoll,label:'Посетитель'}],result:g.delta>0?`Выигрыш +${g.delta}`:g.delta<0?`Проигрыш ${g.delta}`:'Ничья · ставка вернулась',detail:`Ставка ${g.stake} ${word(g.stake,'монета','монеты','монет')}.`};}
     else {
       const report=state.encounter?.report, hit=report?.hits.find(h=>h.attacker==='hero'), init=report?.initiative.find(i=>i.id==='hero');
       const value=report?.flee?.roll ?? hit?.attackDie ?? init?.die;
-      if(value)display={title:report.flee?'Попытка уйти':hit?'Удар гнома':'Ход в бою',rolls:[{value,label:report.flee?'Бегство · d6':hit?'Атака · d6':'Инициатива · d6'}],result:report.flee?state.outcome?.kind==='flee'?'Удалось уйти':'Не удалось оторваться':hit?`Урон противнику: ${hit.damage}`:report.action==='switch'?report.switch?'Оружие сменено':'Не успел сменить оружие':report.hits.some(h=>h.heal!==undefined)?'Зелье использовано':'Не успел выпить зелье',detail:`Жизненные силы: ${before.hero.hp} → ${state.hero.hp}.${hit ? ` Атака: ${hit.attackDie} + ${hit.bonus} − ${hit.absorption}.` : report?.switch ? ` Теперь: ${rules.content.items[report.switch.to].name}.` : ''}`};
+      if(value)display={title:report.flee?'Попытка уйти':hit?'Ваш удар':'Ход в бою',rolls:[{value,label:report.flee?'Бегство · d6':hit?'Атака · d6':'Инициатива · d6'}],result:report.flee?state.outcome?.kind==='flee'?'Удалось уйти':'Не удалось оторваться':hit?`Урон противнику: ${hit.damage}`:report.action==='switch'?report.switch?'Оружие сменено':'Не успел сменить оружие':report.hits.some(h=>h.heal!==undefined)?'Зелье использовано':'Не успел выпить зелье',detail:`Жизненные силы: ${before.hero.hp} → ${state.hero.hp}.${hit ? ` Атака: ${hit.attackDie} + ${hit.bonus} − ${hit.absorption}.` : report?.switch ? ` Теперь: ${rules.content.items[report.switch.to].name}.` : ''}`};
     }
     if(display && !await diceUI.show(display))return;
     if(state!==committed)return;
@@ -409,12 +457,55 @@
     actionButton(minor, `Бежать · d6 ≥ ${rules.escapeThreshold(state)}`, () => doBattle('flee'), {action: 'flee', small:'Неудача: все живые враги атакуют'});
     actionButton(minor, 'Сдаться', () => $('surrender-dialog').showModal(), {action: 'surrender'});
   }
+  function renderHunt(parent) {
+    const h = state.hunt, {row, animal, skill, aim} = rules.huntingProfile(state);
+    html('span', parent, 'БК · U07 · ОКРЕСТНОСТИ ТОВИЛИСА', 'eyebrow');
+    html('h2', parent, `${animal.name} × ${row.count}`);
+    resultDice(parent, [{value:h.roll,label:'Встреча d20'}, ...(h.behavior ? [{value:h.behavior,label:'Поведение d6'}] : [])], `Исход ${h.roll} из 20`);
+    const damage = animal.damageCount ? `${animal.damageCount}d6 + ${animal.damageBonus}` : 'не атакует';
+    html('p',parent,`ЖС ${animal.hp} · сила ${animal.strength ?? '—'} · урон ${damage} · защита ${animal.defense} · ловкость ${animal.agility ?? 'не имеет значения'}.`);
+    html('p',parent,`Ваши силы: ${state.hero.hp}/${state.hero.maxHp} ЖС · добыто зверей: ${h.hp.filter(hp=>!hp).length}/${row.count} · раунд ${h.round}.`,'round-summary');
+    const meat = animal.meat ? `Мясо × ${animal.meat}` : 'Без мяса';
+    html('p',parent,`За каждого добытого зверя: ${meat}${animal.trophies.map(id=>` · ${rules.content.hunting.items[id].name} × 1`).join('')}.`, 'hint');
+    html('p',parent, h.fled ? 'Кабан убежал: на броске поведения выпало 6.' : animal.rangedOnly ? 'Сразу убегает или улетает. Только метательное оружие: один выстрел по одной цели, выжившие уходят.' : h.hostile ? 'Зверь нападает. Отказаться без риска нельзя: атакуйте или пробуйте бежать.' : 'Можно отказаться без боя. При нападении зверь защищается.');
+    html('p',parent,`Первый выстрел — до сближения. В ближнем бою и следующих раундах первым действует тот, у кого d6 + ловкость выше; равенство — в пользу героя. Праща: d6 + меткость ${aim}. Навык «Охота»: +${skill} к урону.`, 'hint');
+    if (h.roll === 1) html('p',parent,'Очень редкий · плачущий и безногий (пометка источника).', 'hint');
+    if (h.roll === 18) html('p',parent,`Медведь сам нападает только при 5–6; выпало ${h.behavior}.`, 'hint');
+    if (h.stage === 'result') {
+      const labels = {victory:'Добыча получена', 'animal-fled':'Выжившие звери убежали', declined:'Вы прошли мимо', escaped:'Вы ушли от зверей', defeat:'Поражение · восстановлено до 8 ЖС, потеряна половина монет; добыча оставлена'};
+      html('h3',parent,labels[h.result]);
+      const loot = html('div',parent,undefined,'inventory-grid');
+      for (const [id,count] of Object.entries(h.loot)) {
+        const item = rules.content.hunting.items[id], card = html('article',loot,undefined,'inventory-item');
+        card.dataset.loot = id; itemIllustration(card,item); const text = html('div',card);
+        html('strong',text,`${item.name} × ${count}`); html('p',text,item.detail,'hint');
+      }
+      const kills = h.hp.filter(hp=>!hp).length;
+      html('p',parent,`Опыт: +${h.result === 'defeat' ? 0 : kills}. Вы остались на U07.`);
+      actionButton(html('div',parent,undefined,'context-actions'),'Вернуться к городским занятиям',()=>act(s=>rules.acknowledge(s)),{primary:true,action:'hunt-done'});
+    } else {
+      let target = h.hp.findIndex(hp=>hp>0);
+      const label = html('label',parent,'Цель: '), select = html('select',label);select.id='hunt-target';
+      h.hp.forEach((hp,i)=>{if(hp>0){const option=html('option',select,`${animal.name} ${i+1} · ${hp}/${animal.hp} ЖС`);option.value=String(i);}});
+      select.onchange=()=>{target=Number(select.value);};
+      const actions = html('div',parent,undefined,'context-actions');
+      for (const action of rules.huntingActions(state)) actionButton(actions,action.label,()=>act(s=>rules.huntAction(s,action.id,die,target)),{primary:['melee','shoot'].includes(action.id),disabled:!action.enabled,small:action.reason || '',action:`hunt-${action.id}`});
+    }
+    const details = html('details',parent,undefined,'round-details');html('summary',details,`Броски сохранены · раунд ${h.round}`);
+    const list=html('ul',details);for(const roll of h.rolls)html('li',list,`${roll.label}: ${roll.value} (d${roll.sides})`);
+  }
+
   function renderContext() {
     const parent = $('context'); parent.replaceChildren();
     if (error) return;
+    if (state.phase === 'hunting') { renderHunt(parent); return; }
     if (state.phase === 'notice' && state.pending.noticeVersion === 3) {
       const card = rules.noticeCard(state), n = state.notice;
-      illustration(parent, 'events', card.art, card.title);
+      const found = rules.noticeFind(state);
+      if (found) {
+        const art = illustration(parent, found.sheet, found.art, `Находка: ${found.name}`, 'scene-art found-item-art');
+        art.dataset.itemId = found.id;
+      } else illustration(parent, 'events', card.art, card.title);
       html('span', parent, 'ГОРОДСКОЕ ИЗВЕЩЕНИЕ', 'eyebrow'); html('h2', parent, card.title);
       html('p', parent, n.stage === 'choice' ? card.text : n.text);
       if (n.stage === 'choice') { const actions = html('div', parent, undefined, 'context-actions'); for (const [id, label] of card.actions) {
@@ -518,8 +609,8 @@
     const time = rules.clock(state.ticks), h = state.hero;
     atlas = atlasFor(h);
     document.querySelectorAll('.portrait-art image').forEach(image => { image.setAttribute('href', atlas.image); image.setAttribute('width', atlas.width); image.setAttribute('height', atlas.height); });
-    $('hero-name').textContent = h.name; $('hp').textContent = `${h.hp} / ${h.maxHp}`; $('health-meter').value = h.hp;
-    $('health-meter').textContent = `${h.hp} из ${h.maxHp}`; $('food').textContent = h.food; $('coins').textContent = h.coins; $('potions').textContent = h.potions;
+    $('hero-name').textContent = h.name; $('hp').textContent = `${h.hp} / ${h.maxHp}`; $('health-meter').max = h.maxHp; $('health-meter').value = h.hp;
+    $('health-meter').textContent = `${h.hp} из ${h.maxHp}`; $('food').textContent = h.food; $('coins').textContent = h.coins; $('potions').textContent = h.potions; $('experience').textContent = h.experience;
     $('drink').disabled = state.phase !== 'ready' || !h.potions || h.hp === h.maxHp || Boolean(error);
     $('day').textContent = `День ${time.day}`;
     $('time').textContent = time.night ? 'Ночь' : state.ticks % 18 < 4 ? 'Утро' : state.ticks % 18 < 8 ? 'День' : 'Вечер';
@@ -591,7 +682,23 @@
     } else if (focusedDirection) $('directions').querySelector(`[data-direction="${focusedDirection}"]`)?.focus({preventScroll: true});
   }
   function word(n, one, few, many) { return n % 100 >= 11 && n % 100 <= 14 ? many : n % 10 === 1 ? one : n % 10 >= 2 && n % 10 <= 4 ? few : many; }
+  function clearMapHint() {
+    if (!mapHintActive) return;
+    const text = mapHintText;
+    clearTimeout(mapHintTimer); mapHintTimer = null; mapHintText = ''; mapHintActive = false;
+    if ($('status').textContent === text) $('status').textContent = '';
+  }
+  function showMapHint(text) {
+    clearMapHint(); mapHintText = text; $('status').textContent = text; mapHintActive = true;
+    const expected = text;
+    mapHintTimer = setTimeout(() => {
+      if (!mapHintActive || mapHintText !== expected) return;
+      mapHintActive = false; mapHintTimer = null; mapHintText = '';
+      if ($('status').textContent === expected) $('status').textContent = '';
+    }, 4500);
+  }
   function showReceipt(before, after) {
+    clearMapHint();
     const items = [], h = before.hero, n = after.hero;
     if (n.coins !== h.coins) items.push(`${n.coins > h.coins ? '+' : '−'}${Math.abs(n.coins - h.coins)} ${word(Math.abs(n.coins - h.coins), 'монета', 'монеты', 'монет')}`);
     if (n.food !== h.food) items.push(`${n.food > h.food ? '+' : '−'}${Math.abs(n.food - h.food)} ${word(Math.abs(n.food - h.food), 'порция еды', 'порции еды', 'порций еды')} · осталось ${n.food}`);
@@ -678,7 +785,7 @@
     }
     if (token === animation) act(s => rules.arrive(s));
   }
-  $('roll').onclick = () => { if (state.phase === 'ready' && state.selection && !error) rolled(s => rules.begin(s, die), 'move'); };
+  $('roll').onclick = () => { if (state.phase === 'ready' && state.selection && !error) { clearMapHint(); rolled(s => rules.begin(s, die), 'move'); } };
   $('stop-building').onchange = () => {
     const option = rules.directions(state.position).find(o => o.next === state.selection?.next);
     if (option) act(s => rules.choose(s, option.next, $('stop-building').checked ? option.building.id : null));
@@ -688,21 +795,20 @@
   $('quest-button').onclick = () => { sceneMode = 'quest'; scenePlace = null; render(); };
   $('drink').onclick = () => act(s => rules.drink(s));
   $('next-meal').onclick = () => { const open = $('food-details').hidden; $('food-details').hidden = !open; $('next-meal').setAttribute('aria-expanded', String(open)); };
-  function gearSlot(parent, id, label, name, effect, detail, itemId = null, symbol = '◇') {
-    const button = html('button', parent, undefined, 'gear-slot'); button.type = 'button'; button.dataset.slot = id;
-    button.setAttribute('aria-label', `${label}: ${name}. ${effect}. ${detail}`);
-    if (itemId) itemIllustration(button, rules.content.items[itemId] || rules.content.finds[itemId] || rules.content.artifacts[itemId]);
-    else html('span', button, symbol, 'gear-symbol');
-    const text = html('span', button, undefined, 'gear-slot-text');
-    html('small', text, label); html('strong', text, name); html('em', text, effect);
-    html('span', button, detail, 'gear-tooltip');
-    button.onclick = () => {
-      document.querySelectorAll('.gear-slot.active').forEach(slot => { if (slot !== button) slot.classList.remove('active'); });
-      button.classList.toggle('active');
-      $('gear-detail').textContent = button.classList.contains('active')
-        ? `${label}: ${name}. ${effect}. ${detail}`
-        : 'Нажмите на слот, чтобы узнать свойства вещи.';
-    };
+  let heroTab = 'overview', selectedGearSlot = 'mainHand', selectedStat = null, heroSheetMessage = '', heroSheetBusy = false;
+  const heroTabScroll = {};
+  function setHeroTab(tab, focus = false) {
+    const scroller = $('hero-scroll');
+    const targetScroll = heroTab === tab ? scroller.scrollTop : heroTabScroll[tab] || 0;
+    if (heroTab !== tab) heroTabScroll[heroTab] = scroller.scrollTop;
+    heroTab = tab;
+    document.querySelectorAll('[data-hero-tab]').forEach(button => {
+      const active = button.dataset.heroTab === tab;
+      button.setAttribute('aria-selected', String(active)); button.tabIndex = active ? 0 : -1;
+      if (active && focus) button.focus();
+    });
+    for (const id of ['overview', 'equipment', 'bag']) $(`hero-panel-${id}`).hidden = id !== tab;
+    scroller.scrollTop = targetScroll;
   }
   function itemEffects(item) {
     if (item.damage) return `Урон d${item.damage.sides} + сила${item.effects.attack ? ` + ${item.effects.attack}` : ''}`;
@@ -713,71 +819,161 @@
     const description = text.join(' · ');
     return description ? description[0].toUpperCase() + description.slice(1) : 'Без боевого бонуса';
   }
+  function renderItemFacts(parent, item, totalWeight = item.weight) {
+    if (item.description) html('p', parent, item.description, 'item-description');
+    const definition=rules.content.items[item.id]||rules.content.finds[item.id]||rules.content.artifacts[item.id];
+    const slot=item.slot||definition?.slot;
+    const facts = html('dl', parent, undefined, 'item-facts');
+    const row = (label, value) => { const pair = html('div', facts); html('dt', pair, label); html('dd', pair, value); };
+    if (slot || item.damage || Object.keys(item.effects || {}).length) row('Свойства', itemEffects(item));
+    else if (item.detail) row('Применение', item.detail.split(' · ').filter(part=>part!==item.description).join(' · '));
+    if (slot) {
+      const requirements = [];
+      if (item.requiredStrength) requirements.push(`Сила не ниже ${item.requiredStrength}`);
+      if ((item.tags || []).includes('heavy')) requirements.push('Нельзя при расовом запрете тяжёлого снаряжения');
+      row('Требования', requirements.join(' · ') || 'Без особых требований');
+    }
+    row('Вес', weightText(totalWeight));
+    if (item.unique) row('Редкость', 'Единственный экземпляр');
+    return facts;
+  }
+  function statChanges(before, after) {
+    const labels = {strength:'сила', agility:'ловкость', defense:'защита', attackBonus:'атака', maxHp:'максимум ЖС', manaBonus:'МЭ'};
+    return Object.entries(labels).filter(([key]) => after[key] !== before[key]).map(([key,label]) => {
+      const delta = after[key] - before[key]; return `${label} ${delta > 0 ? '+' : '−'}${Math.abs(delta)}`;
+    }).join(' · ');
+  }
+  function gearCandidate(slot, id) {
+    if (state.phase !== 'ready') return {reason:'Сначала завершите событие. В бою меняйте оружие действием в окне боя.'};
+    try { const next = rules.equip(state, slot, id); rules.validate(next); return {next, profile:rules.equipmentProfile(next)}; }
+    catch (cause) { return {reason:cause.message}; }
+  }
+  async function applyGear(slot, id) {
+    if (heroSheetBusy) return;
+    const before = rules.equipmentProfile(state).stats;
+    heroSheetBusy = true; heroSheetMessage = 'Сохраняю снаряжение…'; renderHeroSheet(false);
+    try {
+      if (!act(s => rules.equip(s, slot, id))) throw new Error(error || 'Не удалось сменить вещь.');
+      if (online?.enabled) await online.state.pending;
+      if (error) throw new Error(errorDetails || error);
+      const after = rules.equipmentProfile(state).stats;
+      const changes = statChanges(before, after);
+      const item = id && (rules.content.items[id] || rules.content.finds[id] || rules.content.artifacts[id]);
+      heroSheetMessage = `${item ? `Надето: ${item.name}` : 'Вещь убрана в сумку'}${changes ? `. ${changes[0].toUpperCase()+changes.slice(1)}` : ''}.`;
+    } catch (cause) { heroSheetMessage = cause.message; }
+    finally { heroSheetBusy = false; renderHeroSheet(false); $('hero-equip-status').scrollIntoView({block:'nearest'}); }
+  }
+  function renderGearChooser(profile) {
+    const slot = profile.slots.find(slot => slot.id === selectedGearSlot) || profile.slots[0], box = $('gear-detail'); box.replaceChildren();
+    html('span', box, slot.label, 'eyebrow'); html('h3', box, slot.item?.name || 'Свободный слот');
+    const current = html('div', box, undefined, 'gear-current');
+    if (slot.item) {
+      itemIllustration(current, slot.item); const info = html('div', current);
+      renderItemFacts(info, slot.item);
+      if (slot.id !== 'mainHand') {
+        const candidate = gearCandidate(slot.id, null);
+        const remove = actionButton(info, 'Снять в сумку', () => applyGear(slot.id, null), {disabled:heroSheetBusy || Boolean(candidate.reason), action:`unequip-${slot.id}`});
+        remove.dataset.equipItem = ''; remove.dataset.equipSlot = slot.id;
+        if (candidate.reason) html('p', info, candidate.reason, 'hint');
+      }
+    } else html('p', current, 'Здесь пока ничего не надето.', 'hint');
+    const choices = slot.choices.filter(item => item.id !== slot.item?.id);
+    html('h4', box, 'Можно надеть');
+    const list = html('div', box, undefined, 'gear-choices');
+    if (!choices.length) html('p', list, 'В сумке нет других вещей для этого слота.', 'hint');
+    for (const item of choices) {
+      const candidate = gearCandidate(slot.id, item.id), card = html('article', list, undefined, 'gear-choice'); card.dataset.item = item.id;
+      itemIllustration(card, item); const text = html('div', card); html('h4', text, item.name); renderItemFacts(text, item);
+      if (candidate.profile) {
+        const delta = statChanges(profile.stats, candidate.profile.stats);
+        html('p', text, delta ? `Изменится: ${delta}` : 'Характеристики не изменятся', 'gear-delta');
+      } else html('p', text, candidate.reason, 'gear-reason');
+      const button = actionButton(text, 'Надеть', () => applyGear(slot.id, item.id), {primary:true, disabled:heroSheetBusy || Boolean(candidate.reason), action:`equip-${slot.id}-${item.id}`});
+      button.dataset.equipItem = item.id; button.dataset.equipSlot = slot.id;
+    }
+    html('p', box, state.phase === 'ready' ? 'Вне боя смена вещей не тратит время.' : 'Снаряжение доступно для просмотра. В бою смена оружия занимает действие.', 'hint');
+  }
   function renderHeroSheet(open = true) {
-    $('hero-title').textContent = state.hero.name; $('name-input').value = state.hero.name; $('hero-form').hidden = true; $('hero-stats').replaceChildren();
+    const scroller = $('hero-scroll'), scrollTop = scroller.scrollTop;
+    if (open) heroSheetMessage = '';
+    $('hero-title').textContent = state.hero.name; $('name-input').value = state.hero.name; $('hero-form').hidden = true;
     const items = rules.inventory(state), hero = state.hero, profile = rules.equipmentProfile(state), weapon = rules.content.items[rules.equippedWeapon(hero)];
     const identity = hero.character && !hero.character.legacy ? hero.character.labels || {} : {race:'Гном', class:'Воин', sex:'Мужчина'};
     document.querySelector('.hero-identity').textContent = `${identity.race || 'Герой'} · ${identity.class || 'класс не указан'} · ${identity.sex || ''}`.replace(/ · $/, '');
     const identityDetails = document.querySelector('.race-details p');
-    if (identityDetails && hero.character && !hero.character.legacy) identityDetails.textContent = `${identity.race || 'Герой'} · ${identity.origin || hero.character.origin || 'происхождение не указано'}. Пол влияет на внешний вид, характеристики рассчитываются по исходным правилам.`;
+    identityDetails.textContent = hero.character?.legacy
+      ? 'Гном · Воин. Расовые бонусы уже учтены в базовых характеристиках. Гномы не ездят верхом.'
+      : `${identity.race} · ${identity.origin || hero.character.origin}. Расовые бонусы и класс уже учтены в базе. Пол определяет внешний вид.`;
     const explain = key => {
       const bonuses = profile.slots.filter(slot => slot.item?.effects?.[key]);
-      if (!bonuses.length) return `${profile.stats[key]} (база)`;
       const parts = [`${profile.base[key]} база`];
-      for (const slot of profile.slots) { const bonus = slot.item?.effects?.[key]; if (bonus) parts.push(`${bonus > 0 ? '+' : '−'} ${Math.abs(bonus)} ${slot.item.statLabel || slot.item.name}`); }
-      return `${profile.stats[key]} (${parts.join(' ')})`;
+      for (const slot of bonuses) { const bonus=slot.item.effects[key]; parts.push(`${bonus>0?'+':'−'} ${Math.abs(bonus)} ${slot.item.statLabel || slot.item.name}`); }
+      const uncapped=profile.base[key]+bonuses.reduce((sum,slot)=>sum+slot.item.effects[key],0);
+      return `${parts.join(' ')} = ${profile.stats[key]}${uncapped!==profile.stats[key] ? ' (с учётом предела)' : ''}`;
     };
-    const values = {'Жизненные силы': `${hero.hp} / ${hero.maxHp}`, 'Сила': explain('strength'), 'Ловкость': explain('agility'), 'Защита': explain('defense'),
-      'Атака': `d${weapon.damage.sides} + сила ${hero.strength}${weapon.effects.attack ? ` + оружие ${weapon.effects.attack}` : ''} = d${weapon.damage.sides}+${hero.attackBonus}`,
-      'Монеты': hero.coins, 'Опыт': hero.experience, 'Репутация Товилиса': hero.reputation,
-      'Движение': hero.slowMoves ? `−1 шаг: ещё ${hero.slowMoves} перемещения (минимум 1 шаг)` : 'Без штрафа',
-      'Вес известных вещей': `${weightText(items.weight)}${items.unknownWeight ? ' + вещи без указанного веса' : ''}`};
-    if (profile.stats.manaBonus) values['МЭ от вещей'] = `+${profile.stats.manaBonus}; заклинаний в городе пока нет`;
-    for (const [key, value] of Object.entries(values)) { html('dt', $('hero-stats'), key); html('dd', $('hero-stats'), value); }
-    $('gear-left').replaceChildren(); $('gear-right').replaceChildren();
-    $('gear-detail').textContent = 'Нажмите на слот, чтобы узнать свойства вещи.';
-    const ids = {mainHand: 'main-hand', offHand: 'off-hand', neck: 'amulet'};
+    const attack = `d${weapon.damage.sides} + сила ${hero.strength}${weapon.effects.attack ? ` + оружие ${weapon.effects.attack}` : ''} = d${weapon.damage.sides}+${hero.attackBonus}`;
+    const formulas = {strength:explain('strength'),agility:explain('agility'),defense:explain('defense'),attack};
+    $('hero-health-value').textContent = `${hero.hp} / ${hero.maxHp}`;
+    $('hero-health-meter').max = hero.maxHp; $('hero-health-meter').value = hero.hp; $('hero-health-meter').textContent = `${hero.hp} из ${hero.maxHp}`;
+    $('hero-stats').replaceChildren();
+    for (const [id,label,value] of [['strength','Сила',hero.strength],['agility','Ловкость',hero.agility],['defense','Защита',hero.defense],['attack','Атака',`d${weapon.damage.sides}+${hero.attackBonus}`]]) {
+      const card = html('button', $('hero-stats'), undefined, 'hero-stat'); card.type='button'; card.dataset.stat=id;
+      card.setAttribute('aria-expanded',String(selectedStat===id)); card.setAttribute('aria-controls','hero-stat-detail');
+      html('span',card,label);html('strong',card,value);
+      const delta=profile.stats[id]-profile.base[id];
+      html('small',card,id==='attack' ? weapon.name : delta ? `${delta>0?'+':'−'}${Math.abs(delta)} от вещей` : `База ${profile.base[id]}`);
+      card.onclick=()=>{selectedStat=selectedStat===id?null:id; renderHeroSheet(false); $('hero-stats').querySelector(`[data-stat="${id}"]`).focus({preventScroll:true});};
+    }
+    $('hero-stat-detail').hidden=!selectedStat; $('hero-stat-detail').textContent=selectedStat ? formulas[selectedStat] : '';
+    $('hero-resources').replaceChildren();
+    for (const [label,value] of [['Монеты',hero.coins],['Репутация',hero.reputation],['Предметов в сумке',items.bag.length]]) {
+      const row=html('div',$('hero-resources'));html('dt',row,label);html('dd',row,value);
+    }
+    $('hero-experience').textContent = hero.experience;
+    const growth = rules.characters.classes[hero.character?.class || 'warrior'];
+    const growthNames = {strength:'Сила',agility:'Ловкость',intelligence:'Интеллект',aim:'Меткость'};
+    $('hero-class-growth').textContent = growth ? `${growth.name}: сильная сторона — ${growthNames[growth.strong]}, слабая — ${growthNames[growth.weak]}.` : '';
+    $('hero-travel').replaceChildren();
+    html('p',$('hero-travel'),hero.slowMoves ? `Движение: −1 шаг ещё ${hero.slowMoves} перемещения` : 'Движение без штрафа');
+    html('p',$('hero-travel'),`Вес: ${weightText(items.weight)}${items.unknownWeight ? ' + вещи без указанного веса' : ''}`);
+    $('hero-stat-breakdown').replaceChildren();
+    for (const [label,value] of [['Сила',formulas.strength],['Ловкость',formulas.agility],['Защита',formulas.defense],['Атака',attack],['Максимум ЖС',explain('maxHp')]]) {
+      html('dt',$('hero-stat-breakdown'),label);html('dd',$('hero-stat-breakdown'),value);
+    }
+    for (const [key,label] of [['intelligence','Интеллект'],['aim','Меткость']]) if (Number.isFinite(profile.stats[key])) {html('dt',$('hero-stat-breakdown'),label);html('dd',$('hero-stat-breakdown'),profile.stats[key]);}
+    if (profile.stats.manaBonus) {html('dt',$('hero-stat-breakdown'),'МЭ от вещей');html('dd',$('hero-stat-breakdown'),`+${profile.stats.manaBonus}`);}
+    $('gear-left').replaceChildren();$('gear-right').replaceChildren();
+    const oldIds={mainHand:'main-hand',offHand:'off-hand',neck:'amulet'};
     for (const slot of profile.slots) {
-      const item = slot.item, parent = ['head','body','shoulders'].includes(slot.id) ? $('gear-left') : $('gear-right');
-      gearSlot(parent, ids[slot.id] || slot.id, slot.label, item?.name || 'Пусто', item ? itemEffects(item) : 'Бонуса нет',
-        item ? `${item.detail}. Вес: ${weightText(item.weight)}.${item.requiredStrength ? ` Требуется сила ${item.requiredStrength}.` : ''}${item.effects?.agility ? ' Ловкость влияет на инициативу и бегство.' : ''}${item.unique ? ' Единственный экземпляр; обычная лавка не принимает.' : ''}` : 'Здесь нет надетой вещи.', item?.id, '◇');
+      const parent=['head','body','shoulders'].includes(slot.id)?$('gear-left'):$('gear-right');
+      const button=html('button',parent,undefined,'gear-slot'+(selectedGearSlot===slot.id?' active':''));button.type='button';button.dataset.slot=oldIds[slot.id]||slot.id;button.dataset.equipmentSlot=slot.id;
+      button.setAttribute('aria-pressed',String(selectedGearSlot===slot.id));button.setAttribute('aria-label',`${slot.label}: ${slot.item?.name||'пусто'}`);
+      if(slot.item)itemIllustration(button,slot.item);else html('span',button,'◇','gear-symbol');
+      const text=html('span',button,undefined,'gear-slot-text');html('small',text,slot.label);html('strong',text,slot.item?.name||'Пусто');html('em',text,slot.item?itemEffects(slot.item):'');
+      button.onclick=()=>{selectedGearSlot=slot.id;renderHeroSheet(false);$('hero-paperdoll').querySelector(`[data-equipment-slot="${slot.id}"]`).focus({preventScroll:true});if(matchMedia('(max-width:780px)').matches)$('gear-detail').scrollIntoView({block:'nearest',behavior:reducedMotion.matches?'auto':'smooth'});};
     }
-    const loadout = $('hero-loadout'); loadout.replaceChildren();
-    const controls = html('details', loadout, undefined, 'equipment-controls'); html('summary', controls, 'Переодеться и сменить оружие');
-    html('p', controls, state.phase === 'ready' ? 'Вне боя смена вещей не расходует время. В бою оружие меняется отдельным действием вместо атаки.' : 'Во время события переодеться нельзя. Для оружия в бою используйте действие смены.', 'hint');
-    for (const slot of profile.slots) {
-      const row = html('div', controls, undefined, 'equip-row'), label = html('label', row, slot.label), select = html('select', label);
-      select.id = `equip-${slot.id}`; select.setAttribute('aria-label', slot.label);
-      if (slot.id !== 'mainHand') { const option = html('option', select, 'Снять в сумку'); option.value = ''; }
-      for (const choice of slot.choices) {
-        const blocked = (choice.requiredStrength || 0) > hero.strength;
-        const option = html('option', select, choice.name + (blocked ? ` · нужна сила ${choice.requiredStrength}` : ''));
-        option.value = choice.id; option.disabled = blocked;
-      }
-      select.value = slot.item?.id || ''; select.disabled = state.phase !== 'ready' || !slot.choices.length;
-      actionButton(row, 'Применить', () => { if (act(s => rules.equip(s, slot.id, select.value || null))) renderHeroSheet(false); },
-        {disabled: select.disabled, action: `apply-equip-${slot.id}`});
+    renderGearChooser(profile);$('hero-equip-status').textContent=heroSheetMessage;
+    const loadout=$('hero-loadout');loadout.replaceChildren();
+    const heading=html('h3',loadout,'В дорожной сумке');heading.id='hero-bag';
+    $('hero-bag-count').textContent=items.bag.length;
+    const grid=html('div',loadout,undefined,'inventory-grid');
+    if(!items.bag.length)html('p',grid,'Сумка пуста. Снятые вещи и находки появятся здесь.','hint');
+    for(const item of items.bag){
+      const card=html('article',grid,undefined,'inventory-item');card.dataset.item=item.id;itemIllustration(card,item);const text=html('div',card);
+      html('strong',text,item.name);html('span',text,`${item.quantity} ${word(item.quantity,'штука','штуки','штук')}`,'item-slot');renderItemFacts(text,item,item.totalWeight);
+      const slotId=(rules.content.items[item.id]||rules.content.finds[item.id]||rules.content.artifacts[item.id])?.slot;
+      if(slotId){const button=html('button',text,'К слоту', 'bag-equip-link');button.type='button';button.onclick=()=>{selectedGearSlot=slotId;renderHeroSheet(false);setHeroTab('equipment');};}
     }
-    for (const [heading, list, id] of [['В дорожной сумке', items.bag, 'hero-bag'], ['Надето и в руках', items.equipped, 'hero-equipment']]) {
-      const title = html('h3', loadout, heading); title.id = id;
-      const grid = html('div', loadout, undefined, 'inventory-grid');
-      if (!list.length) html('p', grid, 'Сумка пуста.', 'hint');
-      for (const item of list) {
-        const card = html('article', grid, undefined, 'inventory-item'); card.dataset.item = item.id;
-        itemIllustration(card, item); const text = html('div', card);
-        html('strong', text, item.name); html('span', text, item.slot || `Количество: ${item.quantity}`, 'item-slot');
-        html('p', text, item.detail); html('small', text, `Вес: ${weightText(item.totalWeight)}${item.quantity > 1 ? ` · по ${weightText(item.weight)}` : ''}`);
-        if (item.unique) html('small', text, 'Единственный экземпляр · только музей Амшет Эль Хамалаш');
-      }
-    }
-    if (hero.lore.includes('alien-lake')) html('p', loadout, 'Запомнено: Чуждое Озеро в Отверженных Землях. Знакомый указал его на своей карте.', 'hint');
-    html('p', loadout, 'Рисунок героя условный; текущие вещи показаны в слотах. Вес пока не замедляет движение. Гном путешествует пешком.', 'hint');
-    if (open && !$('hero-dialog').open) $('hero-dialog').showModal();
+    if(hero.lore.includes('alien-lake'))html('p',loadout,'Запомнено: Чуждое Озеро в Отверженных Землях. Знакомый указал его на своей карте.','hint');
+    setHeroTab(heroTab);scroller.scrollTop=scrollTop;
+    if(open&&!$('hero-dialog').open)$('hero-dialog').showModal();
   }
-  $('portrait').onclick = () => renderHeroSheet();
-  $('rename-toggle').onclick = () => { $('hero-form').hidden = !$('hero-form').hidden; if (!$('hero-form').hidden) $('name-input').focus(); };
-  $('jump-bag').onclick = () => $('hero-bag').scrollIntoView({block:'start'});
-  $('jump-equipment').onclick = () => $('hero-equipment').scrollIntoView({block:'start'});
+  $('portrait').onclick=()=>renderHeroSheet();
+  $('rename-toggle').onclick=()=>{$('hero-form').hidden=!$('hero-form').hidden;if(!$('hero-form').hidden)$('name-input').focus();};
+  document.querySelectorAll('[data-hero-tab]').forEach((button,index,buttons)=>{
+    button.onclick=()=>setHeroTab(button.dataset.heroTab);
+    button.onkeydown=event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;setHeroTab(buttons[next].dataset.heroTab,true);};
+  });
   $('hero-form').onsubmit = event => { event.preventDefault(); if (!$('name-input').value.trim()) { $('name-input').setCustomValidity('Введите имя.'); $('name-input').reportValidity(); return; } if (act(s => rules.rename(s, $('name-input').value))) $('hero-dialog').close(); };
   $('name-input').oninput = () => $('name-input').setCustomValidity('');
   document.querySelectorAll('[data-close]').forEach(button => { button.onclick = () => $(button.dataset.close).close(); });
@@ -788,7 +984,7 @@
     const descriptions = {
       orders:'Поручение · круглосуточно', mill:'Работа и разговоры · днём', port:'Сдать сеть всегда · работа днём',
       shop:'Сеть 5 монет · зелье 4 · днём', 'far-shop':'Зелье 3 монеты · днём', forge:'Работа, меч и щит · днём',
-      'city-entry':'Вход в город', 'west-house':'Назначение неизвестно'
+      'city-entry':'Вход в город', 'west-house':'Хранение монет · банк'
     };
     for (const b of map.buildings.filter(b => rules.content.places[b.id]).sort((a,b) => rules.shortestPath(state.position,a.cell).length-rules.shortestPath(state.position,b.cell).length)) {
       const button = html('button', $('place-list'));
@@ -845,6 +1041,12 @@
   function finishDrag(e) { if (drag?.id === e.pointerId) { drag = null; if (svg.hasPointerCapture(e.pointerId)) svg.releasePointerCapture(e.pointerId); } }
   svg.addEventListener('pointerup', finishDrag); svg.addEventListener('pointercancel', finishDrag);
   window.addEventListener('storage', e => { if (e.key === KEY || e.key === null) load(); });
+  document.addEventListener('tovilis-presence', () => { if (online?.enabled) render(); });
+  document.addEventListener('tovilis-online-conflict', event => {
+    if (!online?.enabled || !event.detail) return;
+    try { state = rules.validate(event.detail.state || event.detail.game || event.detail); serialized = JSON.stringify(state); error = ''; errorDetails = ''; render(); }
+    catch (cause) { error = 'Сервер прислал неподходящее состояние партии.'; errorDetails = cause.message; render(); }
+  });
   window.addEventListener('keydown', e => {
     if (e.repeat || document.querySelector('dialog[open]') || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.ctrlKey || e.metaKey || e.altKey) return;
     if (state.phase === 'ready' && /^[1-4]$/.test(e.key)) { const option = rules.directions(state.position)[Number(e.key) - 1]; if (option) { e.preventDefault(); select(option.next); $('directions').querySelector(`[data-direction="${option.next}"]`)?.focus({preventScroll:true}); } }

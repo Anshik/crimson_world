@@ -1,0 +1,13 @@
+[Unit]
+Description=Back up CrimsonWorld SQLite
+
+[Service]
+Type=oneshot
+User=crimsonworld
+Group=crimsonworld
+ExecStart=/usr/bin/python3 /opt/crimsonworld/current/tools/backup_game.py /opt/game/data/crimsonworld.sqlite /var/lib/crimsonworld/backups
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/crimsonworld /opt/game/data
