@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Администрирование · Алый Мир</title><link rel="stylesheet" href="/admin.css"><script src="/content.js" defer></script><script src="/characters.js" defer></script><script src="/equipment.js" defer></script><script src="/admin.js" defer></script></head>
+<body>
+<header><div><span class="eyebrow">АЛЫЙ МИР / УПРАВЛЕНИЕ</span><h1>Игроки и их истории</h1></div><div><p id="current-account" class="muted"></p><a href="/">Вернуться в игру ↗</a></div></header>
+<main>
+<p id="error" role="alert" hidden></p>
+<div id="overview" class="metrics"></div>
+<section><div class="section-head"><h2>Игроки</h2><button id="refresh">Обновить</button></div>
+<div class="toolbar"><label>Поиск <input id="search" type="search" placeholder="Логин, имя или ID"></label><label>Тип игрока <select id="kind"><option value="all">Все игроки</option><option value="human">Люди</option><option value="bot">Боты</option></select></label><span id="player-count" class="muted" aria-live="polite"></span></div>
+<div class="scroll"><table><thead><tr><th>Игрок</th><th>Регистрация</th><th>Последнее посещение</th><th>Состояние</th><th>Ходы</th><th>Здоровье</th><th>Опыт / монеты</th></tr></thead><tbody id="players"></tbody></table></div>
+</section>
+<section id="detail" hidden aria-live="polite">
+<div class="section-head"><div><span class="eyebrow" id="player-login"></span><h2 id="player-title"></h2></div><label class="bot-setting"><input id="is-bot" type="checkbox"> Тестовый бот</label></div>
+<div id="summary" class="metrics"></div>
+<div class="toolbar period"><strong>Период · UTC</strong><label>С <input id="from" type="date"></label><label>По <input id="to" type="date"></label><button id="apply-period">Показать</button></div>
+<p id="coverage" class="muted"></p>
+<div class="charts"><article><h3>Ходы по дням</h3><p class="muted">Завершённые игровые ходы, не число запросов</p><div id="activity" class="chart"></div></article><article><div class="section-head"><h3>Динамика характеристик</h3><select id="stat" aria-label="Характеристика"></select></div><div id="growth" class="chart"></div></article></div>
+<div class="columns"><article><h3>Рюкзак и снаряжение</h3><div id="inventory"></div></article><article><h3>Персонаж и состояние игры</h3><div id="settings"></div></article></div>
+<article><div class="section-head"><h3>История действий</h3><label>Поиск в истории <input id="log-search" type="search" placeholder="Событие или команда"></label></div><p id="log-count" class="muted"></p><div id="events"></div><details><summary>История до начала наблюдения (без дат)</summary><p id="legacy-note" class="muted"></p><div id="legacy"></div></details></article>
+<article><h3>Обращения игрока</h3><div id="feedback"></div></article>
+<details><summary>Изменения настроек администратором</summary><div id="audit"></div></details>
+</section>
+</main><footer>Административный доступ · Даты и графики в UTC</footer>
+</body></html>

@@ -10,7 +10,7 @@ const noRoll = () => { throw Error('This action must not roll'); };
 
 test('new party enters between the shops; orders and mill services belong to separate places', () => {
   const s=reload(rules.create());assert.equal(s.position,'U07');assert.equal(s.turn,0);assert.equal(s.ticks,0);
-  assert.equal(rules.services(s).length,0);
+  assert.deepEqual(rules.services(s).map(o=>o.id),['hunt']);
   const orders={...s,position:'Q01'};assert.ok(rules.services(orders).find(o=>o.id==='quest')?.enabled);
   assert.ok(!rules.services(orders).some(o=>['hire','family','work-mill'].includes(o.id)));
   const ordered=rules.service(orders,'quest',noRoll),mill={...ordered,position:'A06'};

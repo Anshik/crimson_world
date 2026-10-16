@@ -14,6 +14,7 @@
     if (e.bidirectional) neighbours.get(e.to).push(e.from);
   }
   const copy = v => JSON.parse(JSON.stringify(v));
+  const FIND_IDS = ['glass','defenseRing','caneKnob','platinumRing','almaMedallion','chrysoberyl'];
   const require = (condition, message) => { if (!condition) throw new Error(message); };
   const integer = (v, min, max = Number.MAX_SAFE_INTEGER) => Number.isSafeInteger(v) && v >= min && v <= max;
   const at = id => map.buildings.filter(b => b.cell === id);
@@ -37,7 +38,7 @@
       version: VERSION, mapId: map.id, mapRevision: map.revision,
       phase: 'ready', position: buildings.get(content.startingPlace).cell, previous: null, facing: 'south', turn: 0, ticks: 0,
       hero: {name, character: {legacy: true, sex: 'male', race: 'dwarf', origin: 'dwarf', class: 'warrior'}, hp: content.equipment.base.maxHp, food: 4, coins: 1, potions: 1, sword: false, shield: false, net: false, finds: {}, experience: 0, reputation: 0, slowMoves: 0, lore: []},
-      world: {uniqueArtifacts: {}}, shopInterest: {}, lastTrade: null, notice: null,
+      bank: {}, world: {uniqueArtifacts: {}}, shopInterest: {}, lastTrade: null, notice: null,
       quest: 'none', millJob: false, familyMet: false,
       workLedger: {day: 1, count: 0}, job: null, tavernGame: null,
       selection: null, pending: null, landing: null, encounter: null, outcome: null, lastMove: null, feedback: null,
@@ -161,6 +162,10 @@
     return endTurn(result);
   }
   function acknowledge(s) {
+    if (s.phase === 'hunting') {
+      require(s.hunt.stage === 'result', 'Сначала завершите охоту.');
+      const result = copy(s); result.phase = 'ready'; result.hunt = null; result.feedback = 'Охота завершена. Вы у входа в Товилис, U07.'; return result;
+    }
     if (s.phase === 'won') { const result = copy(s); result.phase = 'ready'; result.feedback = 'Заказ выполнен. Можно продолжать прогулку по Товилису.'; return result; }
     if (s.phase === 'tavern-game') { const result = copy(s); result.phase = 'ready'; result.tavernGame = null; return result; }
     if (s.phase === 'work-result') { const result = copy(s); result.phase = 'ready'; result.job = null; return result; }
@@ -188,6 +193,13 @@
     return endTurn(result);
   }
   function noticeCard(s) { return content.cityNotices.find(n => n.id === s.notice?.id) || null; }
+  function noticeFind(s) {
+    if (!s || s.notice?.id !== 'find' || s.notice.stage !== 'result' || s.notice.action !== 'search') return null;
+    const result = [...(s.notice.rolls || [])].reverse().find(r => r && r.label === 'Находка' && integer(r.value, 1, 6));
+    if (!result) return null;
+    const id = FIND_IDS[result.value - 1];
+    return id ? {id, ...copy(content.finds[id])} : null;
+  }
   function noticeAction(s, action, die) {
     require(s.phase === 'notice' && s.pending.noticeVersion === 3 && s.notice?.stage === 'choice', 'Извещение уже завершено.');
     const card = noticeCard(s);
@@ -203,7 +215,7 @@
     if (action === 'pass') text = 'Гном продолжил путь, не вмешиваясь.';
     else if (card.id === 'fortune') { coins(2); text = 'Удача улыбнулась: монеты уже в кошельке.'; }
     else if (card.id === 'find') {
-      const id = ['glass','defenseRing','caneKnob','platinumRing','almaMedallion','chrysoberyl'][roll('Находка') - 1];
+      const id = FIND_IDS[roll('Находка') - 1];
       h.finds[id] = (h.finds[id] || 0) + 1;
       if (id === 'defenseRing' && h.finds[id] === 1) { h.equipment.ring = id; equipment.refresh(h); }
       text = `Найдено: ${content.finds[id].name}. ${id === 'defenseRing' ? 'Одно кольцо надето: защита +1. Остальные остаются в сумке.' : content.finds[id].detail}`;
@@ -357,6 +369,152 @@
     }
     return result;
   }
+  // Pilot parameters and historical animal profiles are kept separately in content.hunting.
+  function huntingProfile(s) {
+    const hunt = s.hunt;
+    if (!hunt) return null;
+    const row = content.hunting.rows[hunt.roll - 1], animal = content.hunting.animals[row.animal];
+    return {row, animal, skill: s.hero.character?.skills?.includes('hunting') ? 1 : 0,
+      aim: characters.baseFor(s.hero, content.equipment.base).aim ?? 2};
+  }
+  function huntingActions(s) {
+    if (s.phase !== 'hunting' || s.hunt.stage === 'result') return [];
+    const {animal} = huntingProfile(s), fighting = s.hunt.stage === 'combat';
+    if (s.hunt.fled) return [{id:'leave', label:'Зверь убежал · вернуться', enabled:true}];
+    const peaceful = equipment.stats(s.hero).peaceful;
+    return [
+      {id:'melee', label:'Атаковать мечом', enabled:!animal.rangedOnly && !peaceful, reason:animal.rangedOnly ? 'Только метательное оружие' : peaceful ? 'Слеза Сострадания запрещает агрессию' : ''},
+      {id:'shoot', label:'Выстрелить из пращи', enabled:s.hero.sling === true && !peaceful, reason:!s.hero.sling ? 'Нужна праща из лавки · 2 монеты' : peaceful ? 'Слеза Сострадания запрещает агрессию' : ''},
+      ...(!fighting && !s.hunt.hostile ? [{id:'leave', label:'Отказаться от столкновения', enabled:true}] : [{id:'flee', label:'Бежать · d6 + ловкость против d6 + ловкость зверя', enabled:true}]),
+      ...(fighting || s.hunt.hostile ? [{id:'potion',label:'Выпить зелье · +5 ЖС, вместо атаки',enabled:s.hero.potions > 0 && s.hero.hp < s.hero.maxHp}, {id:'surrender',label:'Признать поражение',enabled:true}] : [])
+    ];
+  }
+  function startHunt(s, die) {
+    require(s.phase === 'ready' && s.position === 'U07', 'Охота доступна только у входа U07.');
+    require(s.hero.food >= content.hunting.food, 'Для охоты нужна 1 порция еды.');
+    const result = copy(s), roll = draw(die, 20), row = content.hunting.rows[roll - 1], animal = content.hunting.animals[row.animal];
+    result.hero.food -= content.hunting.food;
+    advanceTime(result, content.hunting.ticks);
+    const behavior = roll === 9 || roll === 18 ? draw(die) : null;
+    result.phase = 'hunting'; result.selection = null; result.feedback = null;
+    result.hunt = {roll, behavior, stage:'choice', startedAtTick:s.ticks,
+      hostile: !equipment.stats(result.hero).peaceful && animal.damageCount > 0 && (roll !== 18 || behavior >= 5),
+      fled: roll === 9 && behavior === 6, hp:Array(row.count).fill(animal.hp),
+      round:0, rolls:[{label:'Встреча d20',sides:20,value:roll}, ...(behavior ? [{label:'Поведение d6',sides:6,value:behavior}] : [])], loot:{}, result:null};
+    log(result, `Окрестности Товилиса: d20 = ${roll}, ${animal.name} × ${row.count}${behavior ? `; поведение d6 = ${behavior}` : ''}.`);
+    return result;
+  }
+  function finishHunt(s, kind) {
+    const h = s.hunt, {animal} = huntingProfile(s);
+    const kills = h.hp.filter(hp => hp === 0).length;
+    h.stage = 'result'; h.result = kind;
+    // Loot is awarded only at this transition; result cannot be resolved again.
+    if (kind !== 'defeat' && kills) {
+      if (animal.meat) h.loot.gameMeat = animal.meat * kills;
+      for (const id of animal.trophies) h.loot[id] = kills;
+      s.hero.huntingBag = s.hero.huntingBag || {};
+      for (const [id, count] of Object.entries(h.loot)) s.hero.huntingBag[id] = (s.hero.huntingBag[id] || 0) + count;
+      s.hero.experience += kills;
+    }
+    if (kind === 'defeat') {
+      const lost = Math.ceil(s.hero.coins / 2); s.hero.coins -= lost;
+      s.hero.hp = Math.min(8, s.hero.maxHp);
+      log(s, `Поражение на охоте: потеряно ${lost} монет, добыча оставлена; восстановлено до 8 ЖС.`);
+    }
+    const label = {victory:'победа', 'animal-fled':'звери убежали', declined:'отказ от столкновения', escaped:'успешное бегство', defeat:'поражение'}[kind];
+    log(s, `Охота завершена: ${label}; добыто зверей: ${kills}. Возвращение на U07.`);
+    return s;
+  }
+  function huntAction(s, action, die, target = 0) {
+    require(s.phase === 'hunting' && s.hunt && s.hunt.stage !== 'result', 'Охота уже завершена.');
+    const choice = huntingActions(s).find(a => a.id === action);
+    require(choice?.enabled, choice?.reason || 'Действие охоты недоступно.');
+    const result = copy(s), hunt = result.hunt, {animal, skill, aim} = huntingProfile(result);
+    if (action === 'leave') return finishHunt(result, hunt.fled ? 'animal-fled' : 'declined');
+    if (action === 'surrender') return finishHunt(result, 'defeat');
+    if (['melee','shoot'].includes(action)) require(integer(target, 0, hunt.hp.length - 1) && hunt.hp[target] > 0, 'Выберите живого зверя.');
+    const first = hunt.stage === 'choice'; hunt.stage = 'combat'; hunt.round++;
+    const roll = (label, sides = 6) => { const value = draw(die, sides); hunt.rolls.push({label, sides, value}); return value; };
+    // Keep a bounded saved roll history; no roll is drawn again on reload.
+    const enemyAttack = index => {
+      let damage = animal.damageBonus;
+      for (let i = 0; i < animal.damageCount; i++) damage += roll(`Зверь ${index + 1}: атака`);
+      const absorbed = result.hero.defense ? roll('Защита героя', result.hero.defense) : 0;
+      const dealt = Math.max(0, damage - absorbed);
+      result.hero.hp = Math.max(0, result.hero.hp - dealt);
+      log(result, `${animal.name} ${index + 1}: ${damage} − ${absorbed} = ${dealt} урона.`);
+    };
+    const enemyTurn = () => {
+      if (!animal.damageCount) return;
+      for (let i = 0; i < hunt.hp.length; i++) if (hunt.hp[i] > 0) {
+        enemyAttack(i); if (!result.hero.hp) break;
+      }
+    };
+    if (action === 'flee') {
+      const hero = roll('Бегство героя') + result.hero.agility, enemy = roll('Преследование зверя') + (animal.agility || 0);
+      if (hero >= enemy) return finishHunt(result, 'escaped');
+      enemyTurn();
+    } else {
+      // One ranged opening before a predator closes; later rounds use initiative.
+      const heroFirst = action === 'shoot' && first || !animal.damageCount ||
+        roll('Инициатива героя') + result.hero.agility >= roll('Инициатива зверя') + animal.agility;
+      if (!heroFirst) enemyTurn();
+      if (result.hero.hp > 0) {
+        if (action === 'potion') { result.hero.potions--; result.hero.hp = Math.min(result.hero.maxHp, result.hero.hp + 5); }
+        else {
+          const damage = roll(action === 'shoot' ? 'Выстрел' : 'Удар мечом') + (action === 'shoot' ? aim : result.hero.attackBonus) + skill;
+          const absorbed = animal.defense ? roll('Защита зверя', animal.defense) : 0;
+          const dealt = Math.max(0, damage - absorbed); hunt.hp[target] = Math.max(0, hunt.hp[target] - dealt);
+          log(result, `${action === 'shoot' ? 'Выстрел' : 'Удар'}: ${damage} − ${absorbed} = ${dealt} урона.`);
+        }
+        if (heroFirst) enemyTurn();
+      }
+      if (result.hero.hp > 0 && animal.rangedOnly) return finishHunt(result, hunt.hp.every(hp => !hp) ? 'victory' : 'animal-fled');
+    }
+    hunt.rolls = hunt.rolls.slice(-200);
+    if (result.hero.hp === 0) return finishHunt(result, 'defeat');
+    if (hunt.hp.every(hp => hp === 0)) return finishHunt(result, 'victory');
+    return result;
+  }
+  function validateHunt(s) {
+    const bag = s.hero.huntingBag;
+    require(bag === undefined || bag && typeof bag === 'object' && !Array.isArray(bag) && Object.entries(bag).every(([id,n]) => Object.hasOwn(content.hunting.items,id) && integer(n,0)), 'Повреждена охотничья добыча.');
+    require(s.hero.sling === undefined || typeof s.hero.sling === 'boolean', 'Повреждена праща.');
+    if (s.phase !== 'hunting') { require(s.hunt == null, 'Незавершённая охота.'); return; }
+    const h = s.hunt;
+    require(h && integer(h.roll,1,20), 'Повреждён исход охоты.');
+    const {row,animal} = huntingProfile(s);
+    require(s.position === 'U07' && integer(h.startedAtTick,0) && s.ticks === h.startedAtTick + content.hunting.ticks && ['choice','combat','result'].includes(h.stage), 'Повреждено место или время охоты.');
+    require((h.roll === 9 || h.roll === 18) ? integer(h.behavior,1,6) : h.behavior === null, 'Повреждено поведение зверя.');
+    const expectedHostile = !equipment.stats(s.hero).peaceful && animal.damageCount > 0 && (h.roll !== 18 || h.behavior >= 5);
+    require(h.hostile === expectedHostile && h.fled === (h.roll === 9 && h.behavior === 6) && integer(h.round,0) && Array.isArray(h.hp) && h.hp.length === row.count && h.hp.every(hp => integer(hp,0,animal.hp)), 'Повреждены звери.');
+    require(Array.isArray(h.rolls) && h.rolls.length <= 260 && h.rolls.every(r => r && typeof r.label === 'string' && integer(r.sides,1,20) && integer(r.value,1,r.sides)), 'Повреждены броски охоты.');
+    const kills = h.hp.filter(hp => hp === 0).length, expected = {};
+    if (h.stage === 'result' && h.result !== 'defeat' && kills) { if (animal.meat) expected.gameMeat = animal.meat * kills; for (const id of animal.trophies) expected[id] = kills; }
+    require(h.loot && typeof h.loot === 'object' && !Array.isArray(h.loot) && Object.keys(h.loot).length === Object.keys(expected).length && Object.entries(h.loot).every(([id,count]) => Object.hasOwn(expected,id) && count === expected[id]) && (h.stage === 'result' ? ['victory','animal-fled','declined','escaped','defeat'].includes(h.result) : h.result === null), 'Повреждён результат охоты.');
+    if (h.stage === 'choice') require(h.round === 0 && h.hp.every(hp => hp === animal.hp), 'Повреждено начало охоты.');
+    if (h.result === 'victory') require(kills === row.count, 'Не все звери повержены.');
+  }
+
+  // City keys are stable domain identifiers, independent of map asset revisions.
+  function bankStatus(s, city = 'tovilis') {
+    return s.bank?.[city] || {balance: 0, history: []};
+  }
+  function bankTransfer(s, action, amount) {
+    require(s.phase === 'ready' && s.position === buildings.get('west-house').cell, 'Операции доступны только при посещении банка между событиями и боями.');
+    require(['deposit', 'withdraw'].includes(action), 'Неизвестная банковская операция.');
+    require(integer(amount, 1), 'Введите положительное целое число монет.');
+    const account = bankStatus(s), deposit = action === 'deposit';
+    require(amount <= (deposit ? s.hero.coins : account.balance), 'Недостаточно монет для операции.');
+    const cash = s.hero.coins + (deposit ? -amount : amount), balance = account.balance + (deposit ? amount : -amount);
+    require(integer(cash, 0) && integer(balance, 0), 'Слишком большая сумма.');
+    const result = copy(s);
+    result.hero.coins = cash;
+    result.bank ||= {};
+    result.bank.tovilis = {balance, history: [...account.history, {action, amount, cash, balance, turn: s.turn, ticks: s.ticks}]};
+    log(result, `Банк Товилиса: ${deposit ? 'внесено' : 'снято'} ${amount} монет. Наличные: ${cash}, счёт: ${balance}.`);
+    return result;
+  }
   function services(s, buildingId = at(s.position)[0]?.id) {
     const b = buildings.get(buildingId);
     if (s.phase !== 'ready' || !b || b.cell !== s.position) return [];
@@ -364,8 +522,11 @@
     function offer(id, label, {cost = 0, payout = 0, ticks = 0, day = false, condition = true, reason = '', interest = false} = {}) {
       const blocked = day && night ? 'Откроется утром' : h.coins < cost ? `Нужно ${cost} монеты` : !condition ? reason : '';
       const meals = Math.floor((s.ticks + ticks) / 6) - Math.floor(s.ticks / 6);
-      options.push({id, label, cost, payout, ticks, interest, foodCost: Math.min(h.food, meals), hungerCost: Math.min(h.hp - 1, Math.max(0, meals - h.food)), enabled: !blocked, reason: blocked});
+      const foodNeeded = meals + (id === 'hunt' ? content.hunting.food : 0);
+      options.push({id, label, cost, payout, ticks, interest, foodCost: Math.min(h.food, foodNeeded), hungerCost: Math.min(h.hp - 1, Math.max(0, foodNeeded - h.food)), enabled: !blocked, reason: blocked});
     }
+    if (buildingId === 'city-entry') offer('hunt', 'Охотиться · Окрестности Товилиса', {ticks:content.hunting.ticks, condition:h.food >= 1, reason:'Нужна 1 порция еды'});
+    if ((buildingId === 'city-entry' || isTavern(buildingId)) && h.huntingBag?.gameMeat > 0) offer('cook-meat', 'Приготовить 1 мясо → 1 порция еды');
     const shifts = workStatus(s);
     const jobOffer = (id, label) => offer(id, label, {day: true, ticks: content.work.shiftTicks, condition: shifts.remaining > 0, reason: 'На сегодня работа закончена. Новые смены — завтра.'});
     if (buildingId === 'orders') {
@@ -391,6 +552,8 @@
       offer('sell-potion', 'Продать зелье травнику', {payout: 1, day: true, condition: h.potions > 0, reason: 'Нет зелья для продажи'});
     }
     if (['shop','far-shop'].includes(buildingId)) {
+      offer('sling', 'Купить охотничью пращу', {cost:2, day:true, condition:!h.sling, reason:'Праща уже в сумке'});
+      for (const [id,count] of Object.entries(h.huntingBag || {})) if (count && content.hunting.items[id].value > 0) offer(`sell-${id}`, `Продать: ${content.hunting.items[id].name}`, {payout:content.hunting.items[id].value, day:true});
       const day = clock(s.ticks).day, ledger = s.shopInterest[buildingId];
       const sell = (id, owned, payout, interest = false) => {
         const refused = interest && ledger?.day === day && ledger.items[id] >= 4;
@@ -439,6 +602,7 @@
     require(action === 'food' ? integer(quantity, 1) && integer(s.hero.food + portions, 0) : quantity === 1, 'Укажите целое число наборов.');
     const cost = offer.cost * (action === 'food' ? quantity : 1);
     require(integer(cost, 0) && s.hero.coins >= cost, 'Не хватает монет на выбранное количество.');
+    if (action === 'hunt') return startHunt(s, die);
     if (action === 'find-dice') return findDice(s, die);
     const result = copy(s), h = result.hero;
     result.lastTrade = null;
@@ -455,7 +619,10 @@
     }
     h.coins += offer.payout - cost;
     let text = '';
-    if (action === 'quest') { result.quest = 'active'; text = 'Заказ принят: купить сеть за 5 монет и доставить в порт. Награда — 10 монет.'; }
+    if (action === 'sling') { h.sling = true; text = 'Куплена охотничья праща за 2 монеты.'; }
+    else if (action === 'cook-meat') { h.huntingBag.gameMeat--; h.food++; text = 'Приготовлено мясо: +1 порция еды.'; }
+    else if (action.startsWith('sell-') && Object.hasOwn(content.hunting.items, action.slice(5))) { const id = action.slice(5); h.huntingBag[id]--; text = `${content.hunting.items[id].name}: продано 1 за ${offer.payout} монет.`; }
+    else if (action === 'quest') { result.quest = 'active'; text = 'Заказ принят: купить сеть за 5 монет и доставить в порт. Награда — 10 монет.'; }
     else if (action === 'hire') { result.millJob = true; text = 'Мельник нанял гнома помощником. Можно работать дневные смены за 1–3 монеты.'; }
     else if (action === 'family') { result.familyMet = true; text = 'Дочери мельника рассказали о работе, лавке и порте.'; }
     else if (action.startsWith('work-')) {
@@ -549,7 +716,18 @@
   }
   function validate(s) {
     require(s && s.version === VERSION && s.mapId === map.id && s.mapRevision === map.revision, 'Сохранение относится к другой версии игры.');
-    require(['ready', 'moving', 'notice', 'encounter', 'combat', 'outcome', 'work', 'work-result', 'tavern-game', 'won'].includes(s.phase) && cells.has(s.position), 'Повреждено положение героя.');
+    require(['ready', 'moving', 'notice', 'encounter', 'combat', 'outcome', 'work', 'work-result', 'tavern-game', 'won', 'hunting'].includes(s.phase) && cells.has(s.position), 'Повреждено положение героя.');
+    require(s.bank === undefined || s.bank && typeof s.bank === 'object' && !Array.isArray(s.bank), 'Повреждены банковские счета.');
+    for (const account of Object.values(s.bank || {})) {
+      require(account && integer(account.balance, 0) && Array.isArray(account.history), 'Повреждён банковский счёт.');
+      let previous = 0;
+      for (const entry of account.history) {
+        require(entry && ['deposit', 'withdraw'].includes(entry.action) && integer(entry.amount, 1) && integer(entry.cash, 0) && integer(entry.balance, 0) && integer(entry.turn, 0, s.turn) && integer(entry.ticks, 0, s.ticks), 'Повреждена история банка.');
+        require(entry.balance === previous + (entry.action === 'deposit' ? entry.amount : -entry.amount), 'Нарушен баланс банка.');
+        previous = entry.balance;
+      }
+      require(account.balance === previous, 'Нарушен итог банка.');
+    }
     require(s.previous === null || neighbours.get(s.position).includes(s.previous), 'Повреждён предыдущий шаг.');
     require(['north', 'northeast', 'east', 'southeast', 'south', 'southwest', 'west', 'northwest'].includes(s.facing), 'Повреждено направление фигурки.');
     require(integer(s.turn, 0) && integer(s.ticks, s.turn), 'Повреждено время.');
@@ -588,6 +766,7 @@
     }
     require(!(s.phase === 'notice' && s.pending?.noticeVersion === 3) || s.notice !== null, 'Потеряно извещение.');
     require(typeof h.sword === 'boolean' && typeof h.shield === 'boolean' && typeof h.net === 'boolean', 'Повреждено владение снаряжением.');
+    validateHunt(s);
     equipment.validate(h);
     require(s.world && s.world.uniqueArtifacts && typeof s.world.uniqueArtifacts === 'object' && !Array.isArray(s.world.uniqueArtifacts), 'Повреждены уникальные артефакты мира.');
     require(Object.entries(s.world.uniqueArtifacts).every(([id, owner]) => Object.hasOwn(content.artifacts, id) && content.artifacts[id].unique && owner === 'hero' && h.artifacts.includes(id)) && h.artifacts.every(id => !content.artifacts[id].unique || s.world.uniqueArtifacts[id] === 'hero'), 'Потерян или продублирован единственный экземпляр артефакта.');
@@ -597,7 +776,7 @@
     require(s.feedback === null || typeof s.feedback === 'string', 'Повреждено сообщение.');
     require(Array.isArray(s.journal) && s.journal.length <= 80 && s.journal.every(item => integer(item.turn, 0) && typeof item.text === 'string'), 'Повреждён журнал.');
     if (s.lastMove !== null) validateMove(s.lastMove);
-    if (['ready', 'won', 'work', 'work-result', 'tavern-game'].includes(s.phase)) {
+    if (['ready', 'won', 'work', 'work-result', 'tavern-game', 'hunting'].includes(s.phase)) {
       require(s.pending === null && s.landing === null && s.encounter === null && s.outcome === null, 'Незавершённое событие.');
       if (s.selection) {
         const selectedOption = directions(s.position).find(d => d.next === s.selection.next);
@@ -684,5 +863,5 @@
     }
     return migrate(s);
   }
-  return {content, characters, create, createCharacter, clock, facing, directions, shortestPath, plan, choose, begin, arrive, acknowledge, noticeCard, noticeAction, encounterAction, battle, escapeThreshold, equippedWeapon, services, service, workStatus, finishWork, cancelWork, isTavern, tavernProfile, inventory, equipmentProfile, equip, grantArtifact, playDice, drink, rename, validate, migrate, at};
+  return {huntingProfile, huntingActions, huntAction, bankStatus, bankTransfer, content, characters, create, createCharacter, clock, facing, directions, shortestPath, plan, choose, begin, arrive, acknowledge, noticeCard, noticeFind, noticeAction, encounterAction, battle, escapeThreshold, equippedWeapon, services, service, workStatus, finishWork, cancelWork, isTavern, tavernProfile, inventory, equipmentProfile, equip, grantArtifact, playDice, drink, rename, validate, migrate, at};
 });

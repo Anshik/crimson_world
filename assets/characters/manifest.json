@@ -1,0 +1,20 @@
+{
+  "style": "classic fantasy ink and gouache watercolor game art; transparent 4x2 directional atlases",
+  "sources": [
+    "docs/rules/media/guilds/01.gif",
+    "docs/rules/media/guilds/02.gif",
+    "docs/rules/media/guilds/03.gif",
+    "docs/rules/media/secret-societies/01.gif",
+    "docs/rules/media/secret-societies/02.gif",
+    "docs/rules/media/secret-societies/03.gif",
+    "docs/rules/media/cities/13.gif",
+    "docs/rules/media/cities/14.gif"
+  ],
+  "assets": {
+    "human-male": {"path": "assets/characters/human-male-directions-v1.png", "sha256": "256a0ef77cabdcc208a877f43014fe33d5a9b83cdb51627a2eb45446673849b1"},
+    "human-female": {"path": "assets/characters/human-female-directions-v1.png", "sha256": "87e90d163e064fa65ea1e8e446a042f8eeddc2def15b16ff02cbcff1cd967074"},
+    "elf-male": {"path": "assets/characters/elf-male-directions-v1.png", "sha256": "88c097dc0fd9c04ced1c6df520f56781bda5118a61cbd146e893de7eb272f47c"},
+    "elf-female": {"path": "assets/characters/elf-female-directions-v1.png", "sha256": "5962e88a171b35d44eba15fa8a63b73d775976477d48a6afebd57b85af39d522"},
+    "dwarf-female": {"path": "assets/characters/dwarf-female-directions-v1.png", "sha256": "62c33aada1a07804c5f7ea9333f8ceb1c8bfe17109ebb1d3ed76668c50b95e7a"}
+  }
+}

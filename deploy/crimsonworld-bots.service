@@ -1,0 +1,28 @@
+[Unit]
+Description=CrimsonWorld continuous player observation
+After=network-online.target crimsonworld.service
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=crimsonworld
+Group=crimsonworld
+WorkingDirectory=/opt/crimsonworld/current
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/crimsonworld/venv/bin/python -u /opt/crimsonworld/playtest-tools/watch_game_bots.py --release-root /opt/crimsonworld/current --base-url http://127.0.0.1:8088 --credentials /var/lib/crimsonworld/playtests/continuous/credentials.json --out /var/lib/crimsonworld/playtests/continuous
+Restart=always
+RestartSec=30
+TimeoutStopSec=25
+MemoryMax=256M
+CPUQuota=25%
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/crimsonworld/playtests/continuous
+
+[Install]
+WantedBy=multi-user.target

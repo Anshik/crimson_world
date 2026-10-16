@@ -4,21 +4,408 @@
   else root.TOVILIS_CONTENT = factory();
 })(typeof window === 'undefined' ? globalThis : window, () => ({
   version: 6,
+  illustrationSheets: {finds: 'finds-v2.png', hunting: 'hunting-v1.png'},
+  hunting: {
+  "ticks": 3,
+  "food": 1,
+  "animals": {
+    "hedgehog": {
+      "name": "Ежик Миресьева (плачущий и безногий)",
+      "hp": 1,
+      "strength": null,
+      "damageCount": 0,
+      "damageBonus": 0,
+      "defense": 1,
+      "agility": null,
+      "meat": 1,
+      "trophies": [
+        "hedgehogHide"
+      ],
+      "rangedOnly": false
+    },
+    "boar": {
+      "name": "Гривастый Кабан",
+      "hp": 12,
+      "strength": 3,
+      "damageCount": 1,
+      "damageBonus": 2,
+      "defense": 3,
+      "agility": 5,
+      "meat": 5,
+      "trophies": [
+        "boarFangs"
+      ],
+      "rangedOnly": false
+    },
+    "tiger": {
+      "name": "Тигр",
+      "hp": 9,
+      "strength": 5,
+      "damageCount": 2,
+      "damageBonus": 1,
+      "defense": 4,
+      "agility": 6,
+      "meat": 4,
+      "trophies": [
+        "tigerHide"
+      ],
+      "rangedOnly": false
+    },
+    "lynx": {
+      "name": "Рысь",
+      "hp": 5,
+      "strength": 4,
+      "damageCount": 1,
+      "damageBonus": 3,
+      "defense": 3,
+      "agility": 6,
+      "meat": 3,
+      "trophies": [
+        "lynxHide"
+      ],
+      "rangedOnly": false
+    },
+    "wolf": {
+      "name": "Волк",
+      "hp": 2,
+      "strength": 3,
+      "damageCount": 1,
+      "damageBonus": 1,
+      "defense": 2,
+      "agility": 5,
+      "meat": 0,
+      "trophies": [
+        "wolfHide"
+      ],
+      "rangedOnly": false
+    },
+    "goat": {
+      "name": "Дикий козел",
+      "hp": 4,
+      "strength": 3,
+      "damageCount": 0,
+      "damageBonus": 0,
+      "defense": 3,
+      "agility": null,
+      "meat": 4,
+      "trophies": [
+        "goatHide"
+      ],
+      "rangedOnly": true
+    },
+    "duck": {
+      "name": "Утка",
+      "hp": 1,
+      "strength": 4,
+      "damageCount": 0,
+      "damageBonus": 0,
+      "defense": 1,
+      "agility": null,
+      "meat": 1,
+      "trophies": [],
+      "rangedOnly": true
+    },
+    "crow": {
+      "name": "Ворона",
+      "hp": 1,
+      "strength": 2,
+      "damageCount": 0,
+      "damageBonus": 0,
+      "defense": 1,
+      "agility": null,
+      "meat": 1,
+      "trophies": [],
+      "rangedOnly": true
+    },
+    "deer": {
+      "name": "Олень",
+      "hp": 7,
+      "strength": 4,
+      "damageCount": 0,
+      "damageBonus": 0,
+      "defense": 3,
+      "agility": null,
+      "meat": 5,
+      "trophies": [
+        "deerAntlers"
+      ],
+      "rangedOnly": true
+    },
+    "partridge": {
+      "name": "Куропатка",
+      "hp": 2,
+      "strength": 4,
+      "damageCount": 0,
+      "damageBonus": 0,
+      "defense": 1,
+      "agility": null,
+      "meat": 2,
+      "trophies": [],
+      "rangedOnly": true
+    },
+    "squirrel": {
+      "name": "Белка",
+      "hp": 1,
+      "strength": 4,
+      "damageCount": 0,
+      "damageBonus": 0,
+      "defense": 1,
+      "agility": null,
+      "meat": 1,
+      "trophies": [
+        "squirrelHide"
+      ],
+      "rangedOnly": true
+    },
+    "anaconda": {
+      "name": "Анаконда",
+      "hp": 5,
+      "strength": 4,
+      "damageCount": 1,
+      "damageBonus": 3,
+      "defense": 3,
+      "agility": 5,
+      "meat": 3,
+      "trophies": [
+        "anacondaHide"
+      ],
+      "rangedOnly": false
+    },
+    "bear": {
+      "name": "Медведь",
+      "hp": 10,
+      "strength": 6,
+      "damageCount": 2,
+      "damageBonus": 3,
+      "defense": 4,
+      "agility": 5,
+      "meat": 5,
+      "trophies": [
+        "bearHide"
+      ],
+      "rangedOnly": false
+    },
+    "elephant": {
+      "name": "Слон (карликовый, пурпурный)",
+      "hp": 6,
+      "strength": 4,
+      "damageCount": 0,
+      "damageBonus": 0,
+      "defense": 4,
+      "agility": null,
+      "meat": 6,
+      "trophies": [
+        "elephantHide",
+        "elephantTusks"
+      ],
+      "rangedOnly": true
+    }
+  },
+  "rows": [
+    {
+      "animal": "hedgehog",
+      "count": 1
+    },
+    {
+      "animal": "boar",
+      "count": 1
+    },
+    {
+      "animal": "tiger",
+      "count": 1
+    },
+    {
+      "animal": "lynx",
+      "count": 1
+    },
+    {
+      "animal": "wolf",
+      "count": 12
+    },
+    {
+      "animal": "boar",
+      "count": 1
+    },
+    {
+      "animal": "goat",
+      "count": 1
+    },
+    {
+      "animal": "duck",
+      "count": 3
+    },
+    {
+      "animal": "boar",
+      "count": 1
+    },
+    {
+      "animal": "crow",
+      "count": 12
+    },
+    {
+      "animal": "wolf",
+      "count": 6
+    },
+    {
+      "animal": "deer",
+      "count": 1
+    },
+    {
+      "animal": "partridge",
+      "count": 1
+    },
+    {
+      "animal": "crow",
+      "count": 6
+    },
+    {
+      "animal": "squirrel",
+      "count": 1
+    },
+    {
+      "animal": "anaconda",
+      "count": 1
+    },
+    {
+      "animal": "wolf",
+      "count": 6
+    },
+    {
+      "animal": "bear",
+      "count": 1
+    },
+    {
+      "animal": "duck",
+      "count": 1
+    },
+    {
+      "animal": "elephant",
+      "count": 1
+    }
+  ],
+  "items": {
+    "gameMeat": {
+      "name": "Мясо дичи",
+      "sheet": "hunting",
+      "art": 0,
+      "weight": null,
+      "value": 0,
+      "detail": "Приготовить у входа или в таверне: 1 мясо → 1 порция еды; не лечит"
+    },
+    "hedgehogHide": {
+      "name": "Шкура Ежика Миресьева",
+      "sheet": "hunting",
+      "art": 1,
+      "weight": null,
+      "value": 25,
+      "detail": "Обычный трофей · 25 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "boarFangs": {
+      "name": "Клыки Гривастого Кабана",
+      "sheet": "hunting",
+      "art": 2,
+      "weight": null,
+      "value": 7,
+      "detail": "Обычный трофей · 7 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "tigerHide": {
+      "name": "Шкура тигра",
+      "sheet": "hunting",
+      "art": 1,
+      "weight": null,
+      "value": 10,
+      "detail": "Обычный трофей · 10 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "lynxHide": {
+      "name": "Шкура рыси",
+      "sheet": "hunting",
+      "art": 1,
+      "weight": null,
+      "value": 7,
+      "detail": "Обычный трофей · 7 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "wolfHide": {
+      "name": "Шкура волка",
+      "sheet": "hunting",
+      "art": 1,
+      "weight": null,
+      "value": 4,
+      "detail": "Обычный трофей · 4 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "goatHide": {
+      "name": "Шкура дикого козла",
+      "sheet": "hunting",
+      "art": 1,
+      "weight": null,
+      "value": 4,
+      "detail": "Обычный трофей · 4 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "deerAntlers": {
+      "name": "Рога оленя",
+      "sheet": "hunting",
+      "art": 3,
+      "weight": null,
+      "value": 7,
+      "detail": "Обычный трофей · 7 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "squirrelHide": {
+      "name": "Шкурка белки",
+      "sheet": "hunting",
+      "art": 1,
+      "weight": null,
+      "value": 2,
+      "detail": "Обычный трофей · 2 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "anacondaHide": {
+      "name": "Шкура анаконды",
+      "sheet": "hunting",
+      "art": 1,
+      "weight": null,
+      "value": 15,
+      "detail": "Обычный трофей · 15 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "bearHide": {
+      "name": "Шкура медведя",
+      "sheet": "hunting",
+      "art": 1,
+      "weight": null,
+      "value": 9,
+      "detail": "Обычный трофей · 9 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "elephantHide": {
+      "name": "Шкура пурпурного слона",
+      "sheet": "hunting",
+      "art": 1,
+      "weight": null,
+      "value": 15,
+      "detail": "Обычный трофей · 15 монет за штуку · обе лавки днём, без проверки интереса"
+    },
+    "elephantTusks": {
+      "name": "Бивни пурпурного слона",
+      "sheet": "hunting",
+      "art": 4,
+      "weight": null,
+      "value": 7,
+      "detail": "Обычный трофей · 7 монет за штуку · обе лавки днём, без проверки интереса"
+    }
+  }
+},
   startingPlace: 'city-entry',
   taverns: {
     tavern: {foodPortions: 3, aleCost: 1, aleHeal: 1, roomCost: 1, roomTicks: 6, roomHeal: 8, maxStake: 2, roomName: 'Койка в общей комнате'},
     'near-tavern': {foodPortions: 2, aleCost: 2, aleHeal: 2, roomCost: 3, roomTicks: 3, roomHeal: 16, maxStake: 3, roomName: 'Отдельная комната с чистой постелью'}
   },
   items: {
-    shortSword: {name: 'Дорожный короткий меч', detail: 'Стальной клинок с простой бронзовой гардой · урон d6 + сила', weight: 3, art: 0, slot: 'mainHand', requiredStrength: 2, damage: {count: 1, sides: 6}, source: 'cities', effects: {attack: 0}},
-    sword: {name: 'Стальной меч Товилиса', detail: 'Прямой клинок, кожаная рукоять · урон d6 + сила + 1', weight: 5, art: 1, slot: 'mainHand', requiredStrength: 3, damage: {count: 1, sides: 6}, source: 'cities', effects: {attack: 1}},
-    shield: {statLabel: 'щит', name: 'Клёпаный круглый щит', detail: 'Дерево, стальной обод и умбон · защита +1', weight: 2, art: 2, slot: 'offHand', requiredStrength: 2, source: 'cities', effects: {defense: 1}},
-    armor: {statLabel: 'доспех', sheet: 'equipment', art: 1, name: 'Лёгкий дорожный доспех', detail: 'Лёгкий доспех · защита +1, ловкость −1 · нужна сила 2', weight: 3, slot: 'body', requiredStrength: 2, source: 'cities', effects: {defense: 1, agility: -1}},
-    bronzeHelmet: {sheet: 'equipment', art: 0, name: 'Бронзовый шлем', detail: 'Дорожный образ гнома · самостоятельных боевых бонусов не задано', weight: null, slot: 'head', effects: {}, source: 'owner-appearance'},
-    travelCloak: {sheet: 'equipment', art: 2, name: 'Дорожный плащ', detail: 'Плащ путешественника · самостоятельных боевых бонусов не задано', weight: null, slot: 'shoulders', effects: {}, source: 'owner-appearance'},
-    food: {name: 'Дорожный паёк', detail: 'Хлеб, сушёные яблоки и сыр · одна порция на приём пищи', weight: .25, art: 4},
+    sling: {name: 'Охотничья праща', sheet: 'hunting', art: 5, weight: .5, detail: 'Дальний бой на охоте · d6 + меткость · камни без учёта расхода', source: 'hunting-pilot'},
+    shortSword: {name: 'Дорожный короткий меч', description: 'Стальной клинок с простой бронзовой гардой', detail: 'Стальной клинок с простой бронзовой гардой · урон d6 + сила', weight: 3, art: 0, slot: 'mainHand', requiredStrength: 2, damage: {count: 1, sides: 6}, source: 'cities', effects: {attack: 0}},
+    sword: {name: 'Стальной меч Товилиса', description: 'Прямой клинок, кожаная рукоять', detail: 'Прямой клинок, кожаная рукоять · урон d6 + сила + 1', weight: 5, art: 1, slot: 'mainHand', requiredStrength: 3, damage: {count: 1, sides: 6}, source: 'cities', effects: {attack: 1}},
+    shield: {statLabel: 'щит', name: 'Клёпаный круглый щит', description: 'Дерево, стальной обод и умбон', detail: 'Дерево, стальной обод и умбон · защита +1', weight: 2, art: 2, slot: 'offHand', requiredStrength: 2, source: 'cities', effects: {defense: 1}},
+    armor: {description: 'Лёгкий доспех для дороги', statLabel: 'доспех', sheet: 'equipment', art: 1, name: 'Лёгкий дорожный доспех', detail: 'Лёгкий доспех · защита +1, ловкость −1 · нужна сила 2', weight: 3, slot: 'body', requiredStrength: 2, source: 'cities', effects: {defense: 1, agility: -1}},
+    bronzeHelmet: {sheet: 'equipment', art: 0, name: 'Бронзовый шлем', description: 'Дорожный образ гнома', detail: 'Дорожный образ гнома · самостоятельных боевых бонусов не задано', weight: null, slot: 'head', effects: {}, source: 'owner-appearance'},
+    travelCloak: {sheet: 'equipment', art: 2, name: 'Дорожный плащ', description: 'Плащ путешественника', detail: 'Плащ путешественника · самостоятельных боевых бонусов не задано', weight: null, slot: 'shoulders', effects: {}, source: 'owner-appearance'},
+    food: {name: 'Дорожный паёк', description: 'Хлеб, сушёные яблоки и сыр', detail: 'Хлеб, сушёные яблоки и сыр · одна порция на приём пищи', weight: .25, art: 4},
     potion: {name: 'Красное лечебное зелье', detail: 'Восстанавливает до 5 ЖС · в бою занимает действие', weight: .25, art: 5},
-    net: {name: 'Рыбацкая сеть для порта', detail: 'Предмет поручения · сохраняется при поражении', weight: 2, scene: 'orders'}
+    net: {name: 'Рыбацкая сеть для порта', description: 'Предмет поручения', detail: 'Предмет поручения · сохраняется при поражении', weight: 2, scene: 'orders'}
   },
   equipment: {
     system: 'cities-20261015',
@@ -37,12 +424,12 @@
   },
   trade: {neutralPrices: {sword: 8, shield: 4, defenseRing: 8}},
   finds: {
-    glass: {sheet: 'finds', art: 0, name: 'Кусок стекла', detail: 'Находка с мостовой · ценности не имеет', weight: null, symbol: '◇', value: 0},
+    glass: {sheet: 'finds', art: 0, name: 'Кусок стекла', description: 'Находка с мостовой', detail: 'Находка с мостовой · ценности не имеет', weight: null, symbol: '◇', value: 0},
     defenseRing: {statLabel: 'кольцо', sheet: 'finds', art: 1, name: 'Кольцо защиты', detail: 'Защита +1 · действует одно кольцо · предел защиты 9', weight: null, symbol: '◉', value: 4, slot: 'ring', source: 'notices:t1-r28', unique: false, effects: {defense: 1}},
-    caneKnob: {sheet: 'finds', art: 2, name: 'Набалдашник трости', detail: 'Голова ящера · можно продать в лавке', weight: null, symbol: '♧', value: 1},
-    platinumRing: {sheet: 'finds', art: 3, name: 'Платиновое кольцо с бриллиантом', detail: 'Драгоценность · можно продать в лавке', weight: null, symbol: '◈', value: 9},
-    almaMedallion: {sheet: 'finds', art: 4, name: 'Медный медальон Альмы', detail: 'Украшение в виде Альмы · можно продать в лавке', weight: null, symbol: '☼', value: 1},
-    chrysoberyl: {sheet: 'finds', art: 5, name: 'Хризоберилл', detail: 'Драгоценный камень · можно продать в лавке', weight: null, symbol: '◆', value: 3}
+    caneKnob: {sheet: 'finds', art: 2, name: 'Набалдашник трости', description: 'Голова ящера', detail: 'Голова ящера · можно продать в лавке', weight: null, symbol: '♧', value: 1},
+    platinumRing: {sheet: 'finds', art: 3, name: 'Платиновое кольцо с бриллиантом', description: 'Платиновое кольцо с бриллиантом', detail: 'Драгоценность · можно продать в лавке', weight: null, symbol: '◈', value: 9},
+    almaMedallion: {sheet: 'finds', art: 4, name: 'Медный медальон Альмы', description: 'Украшение в виде Альмы', detail: 'Украшение в виде Альмы · можно продать в лавке', weight: null, symbol: '☼', value: 1},
+    chrysoberyl: {sheet: 'finds', art: 5, name: 'Хризоберилл', description: 'Драгоценный камень', detail: 'Драгоценный камень · можно продать в лавке', weight: null, symbol: '◆', value: 3}
   },
   cityNotices: [
     {id: 'fortune', title: 'Повезло', text: 'Иногда удача приходит просто так: вам достаются 2 монеты.', art: 1, source: 't1-r30', field: 2, actions: [['take', 'Забрать монеты']]},
@@ -89,7 +476,7 @@
     shop: {name: 'Снасти и припасы', description: 'Мотки верёвки, рыбацкие снасти и дорожные мелочи. Здесь продаётся сеть для пристани. Зелья тоже есть, но дороже, чем у травника возле входа.', hours: 'Открыта днём; ночью закрыта.'},
     'far-shop': {name: 'Травы у ворот', description: 'Пахнет сушёной мятой. На деревянных полках стоят красные лечебные настои. Травник держит цену ниже лавки снастей, но сетей здесь нет.', hours: 'Открыта днём; ночью закрыта.'},
     'city-entry': {name: 'Вход в Товилис', description: 'За спиной остаётся дорога, впереди — крыши и огни приморского города. Рядом лавка травника и трактир; в городском Заказе можно найти первое поручение.', hours: 'Войти в город можно в любое время.'},
-    'west-house': {name: 'Дом с «О»', description: 'Над дверью сохранилась буква «О». Её значение пока неизвестно. В старых текстах трофеи за награду принимают в городском Заказе («З»).', hours: 'Назначение не установлено.'},
+    'west-house': {name: 'Банк Товилиса', description: 'Храните монеты на городском счёте отдельно от наличных. Покупки оплачиваются только наличными. При обычном поражении деньги на счёте сохраняются.', hours: 'Открыт круглосуточно между событиями и боями. Без комиссии, процентов и затрат времени. Счёт открывается при первом пополнении. Обмен золота и серебра пока недоступен.'},
     forge: {name: 'Кузница', description: 'Молот звенит над наковальней. Здесь найдутся работа, хороший меч и небольшой щит.', hours: 'Работа и торговля — днём; ночью закрыта.'},
     tavern: {name: '«Солёный якорь»', kind: 'tavern', description: 'Потемневшие балки, соль и шёпот моряков за костями. Дешёвая еда, простой эль и койки в общей комнате.', hours: 'Открыта круглосуточно.'},
     'near-tavern': {name: '«Золотой фонарь»', kind: 'tavern', description: 'Латунные фонари, белые скатерти и тихие разговоры купцов. Хороший эль, отдельные комнаты и быстрый отдых — за большую цену.', hours: 'Открыта круглосуточно.'}

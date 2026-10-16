@@ -1,15 +1,15 @@
 # Алый Мир — Товилис
 
-Браузерная игра: путешествие по Товилису, встречи, поручения и бой. Онлайн-режим использует Flask, QuickJS и SQLite.
+Браузерная игра: путешествие по Товилису, встречи, поручения и бой. Онлайн-режим использует Flask, QuickJS и SQLite. [Открыть игру](https://crimsonworld.139-100-236-83.sslip.io/).
 
 ## Запуск локально
 
-Нужны Python 3.10+ и Node.js для тестов JavaScript.
+Нужны Python 3.12+ и Node.js для тестов JavaScript.
 
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.lock
 python -m server
 ```
 
@@ -21,7 +21,7 @@ python -m server
 gunicorn --bind 127.0.0.1:8000 --workers 1 --threads 4 server.app:app
 ```
 
-Переменная `CRIMSON_DB` задаёт путь к базе; `ADMIN_EMAILS` — адреса разрешённых администраторов. Существующую базу на VPS храните отдельно от кода и сохраняйте при обновлениях.
+Переменная `CRIMSON_DB` задаёт путь к базе; список разрешённых администраторов хранится в защищённой конфигурации. Существующую базу на VPS храните отдельно от кода и сохраняйте при обновлениях.
 
 ## Состав проекта
 
@@ -35,6 +35,10 @@ gunicorn --bind 127.0.0.1:8000 --workers 1 --threads 4 server.app:app
 
 Исторические архивы, исследования, промежуточные изображения, локальные базы и окружения исключены из репозитория. Отправка в GitHub сама по себе не запускает развёртывание на VPS.
 
+Выбор персонажа включает пол, три расы, девять происхождений и четыре класса. Общий город поддерживает присутствие игроков, чат, передачу вещей и обратную связь. Регистрация выполняется по приглашению, имени пользователя и паролю; почтовая интеграция в пилот не входит.
+
+Админка игроков доступна по `/admin` для разрешённых администраторов: список, журнал, рюкзак, графики и фильтр ботов. [Доступ и ограничения истории](docs/ADMIN.md).
+
 ## Проверки
 
 ```sh
@@ -42,3 +46,18 @@ node --test tests/*.test.cjs
 python -m unittest discover -s tests -p 'test_*.py'
 python tools/validate_tovilis_map.py
 ```
+
+Интерфейс проверяется отдельным headless Chromium без видимых окон и пользовательских профилей:
+
+```sh
+pip install -r requirements-qa.txt
+python -m playwright install chromium --only-shell
+python tools/check_tovilis_browser.py --hero-sheet
+python tools/check_tovilis_browser.py --game --hud-notice
+python tools/check_tovilis_browser.py --game --sale-ui
+python tools/check_hunting_headless.py
+```
+
+Это зависимости разработки; на игровой сервер они не устанавливаются. Safari требует отдельного согласования на конкретный видимый прогон. Firefox и Vivaldi не используются. Playwright WebKit на этой macOS 27 заблокирован до запуска из-за обнаруженного сбоя загрузки системной библиотеки; основной runner использует только Chromium. Правило сохранено в [AGENTS.md](AGENTS.md).
+
+Охота доступна через вход U07 «Окрестности Товилиса»: 20 исходов Тамруса, дальний бой пращой, мясо и трофеи с продажей в обеих лавках. [Параметры и границы пилота](docs/decisions/2026-10-16-tovilis-hunting-pilot.md) — недостающие числа отмечены как предложения.
